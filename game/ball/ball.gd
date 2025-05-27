@@ -6,6 +6,9 @@ class_name  Ball
 var current_speed
 var max_speed := 1.5
 
+func _ready() -> void:
+	Signals.reset.connect(_on_reset_pressed)
+
 func _process(delta: float) -> void:
 	current_speed = linear_velocity.length()
 	
@@ -15,3 +18,5 @@ func _process(delta: float) -> void:
 	
 	ball_animation.speed_scale = animation_speed
 	
+func _on_reset_pressed():
+	print("МЯЧЕГ ДОЛЖЕН БЫТЬ УТСАНОВЛЕН В НАЧАЛЬНОЕ ПОЛОЖЕНИЕ")
