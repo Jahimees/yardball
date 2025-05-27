@@ -1,7 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://ch5as1n7a7sq5"]
+[gd_scene load_steps=6 format=3 uid="uid://ch5as1n7a7sq5"]
 
 [ext_resource type="Script" uid="uid://bhix6g17r2t2c" path="res://game/player/player.gd" id="1_obar5"]
 [ext_resource type="Texture2D" uid="uid://ltup1fagcyjh" path="res://assets/players/blue/characterBlue.png" id="2_b2mth"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8soms"]
+radius = 11.0
+height = 32.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_obar5"]
 animations = [{
@@ -19,9 +23,17 @@ animations = [{
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_obar5")
 
+[node name="CollisionArea" type="Area2D" parent="."]
+
+[node name="CollisionZone" type="CollisionShape2D" parent="CollisionArea"]
+shape = SubResource("CapsuleShape2D_8soms")
+debug_color = Color(0.281949, 0.631079, 5.77569e-07, 0.42)
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_obar5")
 animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_b2mth")
+
+[connection signal="body_entered" from="CollisionArea" to="." method="_on_collision_area_body_entered"]

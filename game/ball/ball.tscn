@@ -4,10 +4,10 @@
 [ext_resource type="Script" uid="uid://cn50gcqgk5xem" path="res://game/ball/ball.gd" id="1_wbr61"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_sqgsq"]
+friction = 0.5
 bounce = 1.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wbr61"]
-radius = 16.0312
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3butf"]
 atlas = ExtResource("1_sqgsq")
@@ -58,9 +58,12 @@ animations = [{
 }]
 
 [node name="ball" type="RigidBody2D"]
-mass = 0.4
+collision_mask = 7
 physics_material_override = SubResource("PhysicsMaterial_sqgsq")
 gravity_scale = 0.0
+inertia = 0.01
+can_sleep = false
+linear_damp = 1.0
 script = ExtResource("1_wbr61")
 
 [node name="ballShape" type="CollisionShape2D" parent="."]
@@ -68,8 +71,7 @@ shape = SubResource("CircleShape2D_wbr61")
 
 [node name="ballAnimation" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-scale = Vector2(0.25, 0.25)
+scale = Vector2(0.15625, 0.15625)
 sprite_frames = SubResource("SpriteFrames_n5ivy")
-animation = &"idle"
-autoplay = "idle"
-frame_progress = 0.398236
+animation = &"rotation"
+autoplay = "rotation"
