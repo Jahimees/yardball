@@ -38,8 +38,11 @@ move_right={
 ]
 }
 
-[physics]
+[layer_names]
 
+2d_physics/layer_1="player"
+2d_physics/layer_2="ball"
+2d_physics/layer_3="field"
 2d/default_gravity=0.0
 2d/default_gravity_vector=Vector2(0, 0)
 
