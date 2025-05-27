@@ -37,3 +37,4 @@ animation = &"idle"
 shape = SubResource("CapsuleShape2D_b2mth")
 
 [connection signal="body_entered" from="CollisionArea" to="." method="_on_collision_area_body_entered"]
+[connection signal="body_exited" from="CollisionArea" to="." method="_on_collision_area_body_exited"]
