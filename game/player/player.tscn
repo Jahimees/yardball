@@ -36,5 +36,12 @@ animation = &"idle"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_b2mth")
 
+[node name="StaminaLabel" type="Label" parent="."]
+offset_left = -16.0
+offset_top = -43.0
+offset_right = 24.0
+offset_bottom = -20.0
+text = "100"
+
 [connection signal="body_entered" from="CollisionArea" to="." method="_on_collision_area_body_entered"]
 [connection signal="body_exited" from="CollisionArea" to="." method="_on_collision_area_body_exited"]
