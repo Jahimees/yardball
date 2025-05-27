@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://dybvnybaegg15"]
+[gd_scene load_steps=2 format=3 uid="uid://dybvnybaegg15"]
+
+[ext_resource type="Script" uid="uid://chxenx3uyiued" path="res://UI/ui.gd" id="1_2fwl4"]
 
 [node name="Ui" type="Control"]
 layout_mode = 3
@@ -7,3 +9,61 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_2fwl4")
+
+[node name="VerticalContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HprizontalContainer" type="HBoxContainer" parent="VerticalContainer"]
+layout_mode = 2
+
+[node name="Score" type="Label" parent="VerticalContainer/HprizontalContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "  Счет "
+
+[node name="LeftPoints" type="Label" parent="VerticalContainer/HprizontalContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "0"
+
+[node name="dots" type="Label" parent="VerticalContainer/HprizontalContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = ":"
+
+[node name="RightPoints" type="Label" parent="VerticalContainer/HprizontalContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "0"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VerticalContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VerticalContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "  Время "
+
+[node name="TimerLabel" type="Label" parent="VerticalContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "00:00"
+
+[node name="Reset" type="Button" parent="VerticalContainer"]
+custom_minimum_size = Vector2(200, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_font_sizes/font_size = 25
+text = "ПЕРЕЗАПУСК"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 120.0
+
+[connection signal="pressed" from="VerticalContainer/Reset" to="." method="_on_reset_pressed"]
