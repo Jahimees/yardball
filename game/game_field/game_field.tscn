@@ -1,0 +1,94 @@
+[gd_scene load_steps=6 format=3 uid="uid://djutivbypgy10"]
+
+[ext_resource type="Texture2D" uid="uid://b1ckm81hvwwa1" path="res://assets/field/FootballGround.png" id="1_467e1"]
+[ext_resource type="PackedScene" uid="uid://ch5as1n7a7sq5" path="res://game/player/player.tscn" id="2_c38ol"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_467e1"]
+size = Vector2(1155, 16.75)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c38ol"]
+size = Vector2(20, 673)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u8ksv"]
+size = Vector2(68.25, 5)
+
+[node name="game_field" type="Node2D"]
+
+[node name="FootballGround" type="Sprite2D" parent="."]
+position = Vector2(576, 324)
+texture = ExtResource("1_467e1")
+
+[node name="Player" parent="." instance=ExtResource("2_c38ol")]
+position = Vector2(528, 29)
+collision_mask = 7
+
+[node name="borders" type="Node2D" parent="."]
+
+[node name="top_border" type="StaticBody2D" parent="borders"]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/top_border"]
+position = Vector2(575.5, -8.375)
+shape = SubResource("RectangleShape2D_467e1")
+
+[node name="bot_border" type="StaticBody2D" parent="borders"]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/bot_border"]
+position = Vector2(575.5, 656.25)
+shape = SubResource("RectangleShape2D_467e1")
+
+[node name="left_border" type="StaticBody2D" parent="borders"]
+position = Vector2(-1, 0)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/left_border"]
+position = Vector2(-9, 323)
+shape = SubResource("RectangleShape2D_c38ol")
+
+[node name="right_border" type="StaticBody2D" parent="borders"]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="borders/right_border"]
+position = Vector2(1162, 323)
+shape = SubResource("RectangleShape2D_c38ol")
+
+[node name="right_gate" type="Node" parent="."]
+
+[node name="rg_top_border" type="StaticBody2D" parent="right_gate"]
+collision_layer = 4
+collision_mask = 3
+
+[node name="rg_top_border" type="CollisionShape2D" parent="right_gate/rg_top_border"]
+position = Vector2(1118, 229.5)
+shape = SubResource("RectangleShape2D_u8ksv")
+
+[node name="rg_bot_border" type="StaticBody2D" parent="right_gate"]
+collision_layer = 4
+collision_mask = 3
+
+[node name="rg_bot_border" type="CollisionShape2D" parent="right_gate/rg_bot_border"]
+position = Vector2(1118, 418.5)
+shape = SubResource("RectangleShape2D_u8ksv")
+
+[node name="left_gate" type="Node" parent="."]
+
+[node name="lg_top_border" type="StaticBody2D" parent="left_gate"]
+collision_layer = 4
+collision_mask = 3
+
+[node name="lg_top_border" type="CollisionShape2D" parent="left_gate/lg_top_border"]
+position = Vector2(33.875, 230.5)
+shape = SubResource("RectangleShape2D_u8ksv")
+
+[node name="lg_bot_border" type="StaticBody2D" parent="left_gate"]
+collision_layer = 4
+collision_mask = 3
+
+[node name="lg_bot_border" type="CollisionShape2D" parent="left_gate/lg_bot_border"]
+position = Vector2(34, 419.5)
+shape = SubResource("RectangleShape2D_u8ksv")
