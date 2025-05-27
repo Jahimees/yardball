@@ -1,0 +1,75 @@
+[gd_scene load_steps=11 format=3 uid="uid://d33i88gcp4jxp"]
+
+[ext_resource type="Texture2D" uid="uid://bydyrfp3srk15" path="res://assets/ball/ball-sheet.png" id="1_sqgsq"]
+[ext_resource type="Script" uid="uid://cn50gcqgk5xem" path="res://game/ball/ball.gd" id="1_wbr61"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_sqgsq"]
+bounce = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wbr61"]
+radius = 16.0312
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3butf"]
+atlas = ExtResource("1_sqgsq")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3refl"]
+atlas = ExtResource("1_sqgsq")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s334u"]
+atlas = ExtResource("1_sqgsq")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6syx0"]
+atlas = ExtResource("1_sqgsq")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fhoup"]
+atlas = ExtResource("1_sqgsq")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n5ivy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3butf")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3refl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s334u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6syx0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fhoup")
+}],
+"loop": true,
+"name": &"rotation",
+"speed": 10.0
+}]
+
+[node name="ball" type="RigidBody2D"]
+mass = 0.4
+physics_material_override = SubResource("PhysicsMaterial_sqgsq")
+gravity_scale = 0.0
+script = ExtResource("1_wbr61")
+
+[node name="ballShape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_wbr61")
+
+[node name="ballAnimation" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.25, 0.25)
+sprite_frames = SubResource("SpriteFrames_n5ivy")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.398236
