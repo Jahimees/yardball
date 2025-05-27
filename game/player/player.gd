@@ -31,8 +31,7 @@ func move(direction: Vector2):
 	elif Input.is_action_pressed("move_right"):
 		velocity = direction.rotated(deg_to_rad(run_angle)) * SPEED
 	
-
-
+	
 func _on_collision_area_body_entered(body: Node2D) -> void:
 	if body is Ball:
-		body.apply_central_impulse(velocity * 0.001)
+		body.apply_central_impulse(velocity * 1.5)

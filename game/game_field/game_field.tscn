@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://djutivbypgy10"]
+[gd_scene load_steps=7 format=3 uid="uid://djutivbypgy10"]
 
 [ext_resource type="Texture2D" uid="uid://b1ckm81hvwwa1" path="res://assets/field/FootballGround.png" id="1_467e1"]
 [ext_resource type="PackedScene" uid="uid://ch5as1n7a7sq5" path="res://game/player/player.tscn" id="2_c38ol"]
+[ext_resource type="PackedScene" uid="uid://d33i88gcp4jxp" path="res://game/ball/ball.tscn" id="3_c38ol"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_467e1"]
 size = Vector2(1155, 16.75)
@@ -19,7 +20,7 @@ position = Vector2(576, 324)
 texture = ExtResource("1_467e1")
 
 [node name="Player" parent="." instance=ExtResource("2_c38ol")]
-position = Vector2(528, 29)
+position = Vector2(540, 289)
 collision_mask = 7
 
 [node name="borders" type="Node2D" parent="."]
@@ -92,3 +93,6 @@ collision_mask = 3
 [node name="lg_bot_border" type="CollisionShape2D" parent="left_gate/lg_bot_border"]
 position = Vector2(34, 419.5)
 shape = SubResource("RectangleShape2D_u8ksv")
+
+[node name="ball" parent="." instance=ExtResource("3_c38ol")]
+position = Vector2(571, 322)
