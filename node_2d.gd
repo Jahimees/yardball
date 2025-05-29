@@ -11,7 +11,6 @@ func _ready() -> void:
 func host_game():
 	peer.create_server(PORT)
 	multiplayer.multiplayer_peer = peer
-	spawn_player.rpc(1)
 	print("Сервер красава")
 
 func join_game(ip):
