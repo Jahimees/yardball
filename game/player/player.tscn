@@ -21,9 +21,11 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_b2mth"]
 
 [node name="Player" type="CharacterBody2D"]
+collision_mask = 6
 script = ExtResource("1_obar5")
 
 [node name="CollisionArea" type="Area2D" parent="."]
+collision_mask = 6
 
 [node name="CollisionZone" type="CollisionShape2D" parent="CollisionArea"]
 shape = SubResource("CapsuleShape2D_8soms")

@@ -1,10 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://djutivbypgy10"]
+[gd_scene load_steps=11 format=3 uid="uid://djutivbypgy10"]
 
 [ext_resource type="Texture2D" uid="uid://b1ckm81hvwwa1" path="res://assets/field/FootballGround.png" id="1_467e1"]
 [ext_resource type="Script" uid="uid://cof3ai77kx0q8" path="res://game/game_field/game_field.gd" id="1_u8ksv"]
 [ext_resource type="PackedScene" uid="uid://ch5as1n7a7sq5" path="res://game/player/player.tscn" id="2_c38ol"]
 [ext_resource type="PackedScene" uid="uid://d33i88gcp4jxp" path="res://game/ball/ball.tscn" id="3_c38ol"]
-[ext_resource type="PackedScene" uid="uid://dybvnybaegg15" path="res://UI/ui.tscn" id="5_oiqg3"]
+[ext_resource type="PackedScene" uid="uid://psm5qtp5h38i" path="res://UI/ui.tscn" id="5_oiqg3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_467e1"]
 size = Vector2(1155, 16.75)
@@ -17,6 +17,8 @@ size = Vector2(68.25, 5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oiqg3"]
 size = Vector2(65, 184)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_oiqg3"]
 
 [node name="game_field" type="Node2D"]
 script = ExtResource("1_u8ksv")
@@ -83,6 +85,8 @@ position = Vector2(1118, 418.5)
 shape = SubResource("RectangleShape2D_u8ksv")
 
 [node name="RightGoalArea" type="Area2D" parent="right_gate"]
+collision_layer = 4
+collision_mask = 2
 
 [node name="RightGoalCollision" type="CollisionShape2D" parent="right_gate/RightGoalArea"]
 position = Vector2(1119, 324)
@@ -108,6 +112,8 @@ position = Vector2(34, 419.5)
 shape = SubResource("RectangleShape2D_u8ksv")
 
 [node name="LeftGoalArea" type="Area2D" parent="left_gate"]
+collision_layer = 4
+collision_mask = 2
 
 [node name="LeftGoalCollision" type="CollisionShape2D" parent="left_gate/LeftGoalArea"]
 position = Vector2(33, 325)
@@ -120,6 +126,10 @@ position = Vector2(571, 322)
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Ui" parent="CanvasLayer" instance=ExtResource("5_oiqg3")]
+
+[node name="PlayerIdle" type="Sprite2D" parent="."]
+position = Vector2(573, 86)
+texture = SubResource("CompressedTexture2D_oiqg3")
 
 [connection signal="body_entered" from="right_gate/RightGoalArea" to="." method="_on_right_goal_area_body_entered"]
 [connection signal="body_entered" from="left_gate/LeftGoalArea" to="." method="_on_left_goal_area_body_entered"]
