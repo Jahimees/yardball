@@ -35,7 +35,7 @@ func spawn_player(peer_id):
 	var player_scene = load("res://game/player/player.tscn")
 	var player = player_scene.instantiate()
 	player.name = str(peer_id)
-	add_child(player)
+	call_deferred("add_child", player)
 	
 @rpc("authority", "call_local", "reliable")
 func sync_game_state(game_state):
@@ -58,6 +58,6 @@ func _on_right_goal_area_body_entered(body: Node2D) -> void:
 
 
 func _on_left_goal_area_body_entered(body: Node2D) -> void:
-	join_game("127.0.0.1")
+	join_game("26.233.123.79")
 	if body is Ball:
 		Signals.left_goal.emit()

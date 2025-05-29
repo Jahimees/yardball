@@ -18,10 +18,16 @@ func _physics_process(delta: float) -> void:
 	velocity = Vector2(0, 0)
 	
 	var direction = (get_global_mouse_position() - self.global_position).normalized()
-	sprint.rpc_id(1)
-	move.rpc_id(1, direction)
+	if not is_multiplayer_authority():
+		return
 	
-	move_and_slide()
+	if multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+		sprint.rpc_id(1)
+		move.rpc_id(1, direction)
+	
+		move_and_slide()
+	else:
+		print("PIZDA")
 	
 @rpc("any_peer", "call_local", "reliable")
 func push_ball():
