@@ -7,8 +7,8 @@ var stamina = 100
 
 @onready var player_sprite = $AnimatedSprite2D
 
-var collision_body
-var is_ball_pushed
+@export var collision_body:Node = null
+@export var is_ball_pushed = false
 
 var can_reduce_stamina: bool = true
 var can_add_stamina: bool = true
@@ -18,17 +18,20 @@ func _physics_process(delta: float) -> void:
 	velocity = Vector2(0, 0)
 	
 	var direction = (get_global_mouse_position() - self.global_position).normalized()
-	sprint()
-	move(direction)
+	sprint.rpc_id(1)
+	move.rpc_id(1, direction)
 	
+	move_and_slide()
+	
+@rpc("any_peer", "call_local", "reliable")
+func push_ball():
 	if collision_body is Ball and !is_ball_pushed:
 		is_ball_pushed = true
 		collision_body.apply_central_impulse(velocity * 1)
 		await get_tree().create_timer(0.3).timeout
 		is_ball_pushed = false
-	
-	move_and_slide()
-	
+
+@rpc("any_peer", "call_local", "reliable")
 func sprint():
 	if Input.is_action_pressed("sprint") and stamina > 0:
 		speed = 300
@@ -48,12 +51,14 @@ func sprint():
 				
 	$StaminaLabel.text = str(stamina)
 
+@rpc("any_peer", "call_local", "reliable")
 func reduce_stamina():
 	stamina -= 10
 	can_reduce_stamina = false
 	get_tree().create_timer(0.1).timeout.connect(func():
 		can_reduce_stamina = true)
-		
+
+@rpc("any_peer", "call_local", "reliable")
 func add_stamina():
 	stamina += 10
 	can_add_stamina = false
@@ -61,7 +66,7 @@ func add_stamina():
 	get_tree().create_timer(0.3).timeout.connect(func():
 		can_add_stamina = true
 		)
-		
+
 func activate_restore_cooldown():
 	add_cooldown_active = true
 	can_add_stamina = false
@@ -69,7 +74,8 @@ func activate_restore_cooldown():
 		add_cooldown_active = false
 		add_stamina()
 		)
-		
+
+@rpc("any_peer", "call_local", "reliable")
 func move(direction: Vector2):
 	var run_angle = 90
 	player_sprite.rotate(player_sprite.get_angle_to(get_global_mouse_position()))
