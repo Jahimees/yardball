@@ -7,6 +7,8 @@ var players = {}
 func host_game():
 	var err = multiplayer_peer.create_server(8080, 3)
 	multiplayer.multiplayer_peer = multiplayer_peer
+	multiplayer.peer_connected.connect(_on_peer_connected)
+	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	spawn_player(1)
 	print("СЕРВЕР УРА")
 
