@@ -1,0 +1,92 @@
+[gd_scene load_steps=3 format=3 uid="uid://ji4q00r8c4f"]
+
+[ext_resource type="Script" uid="uid://thbluk7pv55r" path="res://UI/ui_menu.gd" id="1_3gby7"]
+[ext_resource type="Texture2D" uid="uid://b1ckm81hvwwa1" path="res://assets/field/FootballGround.png" id="2_gl5su"]
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3gby7")
+
+[node name="FootballGround" type="Sprite2D" parent="."]
+position = Vector2(576, 326)
+texture = ExtResource("2_gl5su")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+offset_top = 56.0
+offset_right = -99.0
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.490196)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+offset_top = 56.0
+offset_right = -99.0
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MargContTitle" type="MarginContainer" parent="Control/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Title" type="Label" parent="Control/VBoxContainer/MargContTitle"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+text = "YardBall"
+horizontal_alignment = 1
+
+[node name="MargContStart" type="MarginContainer" parent="Control/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="ButtonStart" type="Button" parent="Control/VBoxContainer/MargContStart"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 45
+text = "Start"
+
+[node name="MargContQuit" type="MarginContainer" parent="Control/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="ButtonQuit" type="Button" parent="Control/VBoxContainer/MargContQuit"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 45
+text = "Quit"
+
+[connection signal="pressed" from="Control/VBoxContainer/MargContStart/ButtonStart" to="." method="_on_button_start_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/MargContQuit/ButtonQuit" to="." method="_on_button_quit_pressed"]
