@@ -6,7 +6,6 @@ var input = Vector2.ZERO
 
 func _physics_process(delta: float) -> void:
 	
-	print(get_multiplayer_authority())
 	if !is_multiplayer_authority():
 		return
 		

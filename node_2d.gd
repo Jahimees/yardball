@@ -11,14 +11,15 @@ func _ready() -> void:
 func host_game():
 	peer.create_server(PORT)
 	multiplayer.multiplayer_peer = peer
-	spawn_player(1)
+	spawn_player.rpc(1)
 	print("Сервер красава")
 
 func join_game(ip):
 	peer.create_client(ip, PORT)
 	multiplayer.multiplayer_peer = peer
 	print("Подключение КЫ", ip)
-	
+
+@rpc("any_peer", "call_local", "reliable")
 func spawn_player(id):
 	print("spawn player with id ", id)
 	var player = preload("res://test/man.tscn").instantiate()
@@ -32,7 +33,7 @@ func spawn_player(id):
 	
 func _on_peer_connected(id):
 	print("Игрок молодец подключился", id)
-	spawn_player(id)
+	spawn_player.rpc(id)
 	
 func _on_peer_disconnected(id):
 	print("ПОКА ПОКА")
