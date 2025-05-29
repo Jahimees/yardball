@@ -20,12 +20,15 @@ func join_game(ip):
 	print("Подключение КЫ", ip)
 	
 func spawn_player(id):
+	print("spawn player with id ", id)
 	var player = preload("res://test/man.tscn").instantiate()
 	player.name = str(id)
 	get_tree().root.add_child(player)
 	
 	if id == multiplayer.get_unique_id():
 		player.set_multiplayer_authority(id)
+	else:
+		player.set_physics_process(false)
 	
 func _on_peer_connected(id):
 	print("Игрок молодец подключился", id)
