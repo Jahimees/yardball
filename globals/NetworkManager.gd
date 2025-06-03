@@ -37,12 +37,14 @@ func register_player(peer_id = 1):
 	
 	if Globals.all_players.get(peer_id) == null:
 		Globals.all_players[peer_id] = peer_id
-		Signals.TEAMS_CHANGED.emit()
 		
-		if Globals.left_team.size() < Globals.right_team.size():
+		if Globals.left_team.size() <= Globals.right_team.size():
 			Globals.left_team[peer_id] = peer_id
 		else:
 			Globals.right_team[peer_id] = peer_id
+		
+		Signals.TEAMS_CHANGED.emit()
+		
 
 @rpc("any_peer", "call_local", "reliable")	
 func unregister_player(peer_id):

@@ -13,7 +13,11 @@ func _process(delta: float) -> void:
 	pass
 	
 func _on_teams_changed():
+
 	for node in left_players_container.get_children():
+		node.queue_free()
+		
+	for node in right_players_container.get_children():
 		node.queue_free()
 	
 	for player in Globals.left_team:
