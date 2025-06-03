@@ -64,15 +64,6 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Player 1"
 
-[node name="RIghtPlayersContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Player_2" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/HBoxContainer/RIghtPlayersContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Player 1"
-
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
@@ -94,6 +85,15 @@ text = "Количество голов:"
 [node name="GoalsCountInput" type="LineEdit" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/GoalsCountSetting"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="RIghtPlayersContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/GoalsCountSetting"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Player_2" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/GoalsCountSetting/RIghtPlayersContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Player 1"
 
 [node name="MatchTimeSetting" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2"]
 layout_mode = 2

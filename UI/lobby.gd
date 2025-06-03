@@ -18,11 +18,11 @@ func _on_teams_changed():
 	
 	for player in Globals.left_team:
 		var label = Label.new()
-		label.text = player
+		label.text = str(player)
 		left_players_container.add_child(label)
 		
 	for player in Globals.right_team:
 		var label = Label.new()
-		label.text = player
+		label.text = str(player)
 		right_players_container.add_child(label)
 	
