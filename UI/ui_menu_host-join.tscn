@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cpkn22pceqjo1"]
+[gd_scene load_steps=3 format=3 uid="uid://cjc30k71le742"]
 
-[ext_resource type="Script" uid="uid://thbluk7pv55r" path="res://UI/ui_menu.gd" id="1_3gby7"]
-[ext_resource type="Texture2D" uid="uid://b1ckm81hvwwa1" path="res://assets/field/FootballGround.png" id="2_gl5su"]
+[ext_resource type="Script" uid="uid://b6y4if1ulje6w" path="res://UI/ui_menu_host_join.gd" id="1_dnd5s"]
+[ext_resource type="Texture2D" uid="uid://b1ckm81hvwwa1" path="res://assets/field/FootballGround.png" id="2_v516w"]
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -10,11 +10,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_3gby7")
+script = ExtResource("1_dnd5s")
 
 [node name="FootballGround" type="Sprite2D" parent="."]
 position = Vector2(576, 326)
-texture = ExtResource("2_gl5su")
+texture = ExtResource("2_v516w")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 1
@@ -66,27 +66,43 @@ theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 40
 theme_override_constants/margin_bottom = 40
 
-[node name="ButtonStart" type="Button" parent="Control/VBoxContainer/MargContStart"]
+[node name="ButtonHost" type="Button" parent="Control/VBoxContainer/MargContStart"]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/font_size = 45
-text = "Начать"
+text = "Создать"
 
 [node name="MargContQuit" type="MarginContainer" parent="Control/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 40
 theme_override_constants/margin_bottom = 40
 
-[node name="ButtonQuit" type="Button" parent="Control/VBoxContainer/MargContQuit"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/VBoxContainer/MargContQuit"]
+layout_mode = 2
+
+[node name="ButtonConnect" type="Button" parent="Control/VBoxContainer/MargContQuit/VBoxContainer"]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/font_size = 45
-text = "Выйти"
+text = "Присоединиться"
 
-[connection signal="pressed" from="Control/VBoxContainer/MargContStart/ButtonStart" to="." method="_on_button_start_pressed"]
-[connection signal="pressed" from="Control/VBoxContainer/MargContQuit/ButtonQuit" to="." method="_on_button_quit_pressed"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/VBoxContainer/MargContQuit/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ip_address" type="LineEdit" parent="Control/VBoxContainer/MargContQuit/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 30
+text = "10.0.0.10"
+alignment = 1
+
+[connection signal="pressed" from="Control/VBoxContainer/MargContStart/ButtonHost" to="." method="_on_button_host_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/MargContQuit/VBoxContainer/ButtonConnect" to="." method="_on_button_connect_pressed"]
