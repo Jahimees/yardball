@@ -24,39 +24,25 @@ func _physics_process(delta: float) -> void:
 		position = position.lerp(target_position, delta * 10)
 		return
 	
-	
-	
 	var direction = (get_global_mouse_position() - self.global_position).normalized()
-	#if not is_multiplayer_authority():
-		#return
 	
-	#if multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
 	velocity = Vector2(0, 0)
 	sprint()
 	move(direction)
-	
-		#move_and_slide()
-
-	#input = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	
-	#velocity = input * speed
 	move_and_slide()
 	
-	#if multiplayer.is_server():
 	update_position.rpc(position)
 		
 @rpc("any_peer", "unreliable_ordered")
 func update_position(new_position: Vector2) -> void:
-	position = new_position
-	if is_multiplayer_authority():
-		return  # Не обновляем себя
-		
 	target_position = new_position
 	
 @rpc("any_peer", "call_local", "reliable")
 func push_ball():
+	print("Должен пнуть")
 	if collision_body is Ball and !is_ball_pushed:
 		is_ball_pushed = true
+		print("Ну пнул")
 		collision_body.apply_central_impulse(velocity * 1)
 		await get_tree().create_timer(0.3).timeout
 		is_ball_pushed = false
@@ -126,6 +112,7 @@ func move(direction: Vector2):
 	
 func _on_collision_area_body_entered(body: Node2D) -> void:
 	collision_body = body
+	push_ball()
 
 func _on_collision_area_body_exited(body: Node2D) -> void:
 	collision_body = null
