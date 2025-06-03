@@ -1,0 +1,139 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlwltfq8od012"]
+
+[ext_resource type="Texture2D" uid="uid://b1ckm81hvwwa1" path="res://assets/field/FootballGround.png" id="1_ll2xe"]
+
+[node name="Lobby" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FootballGround" type="Sprite2D" parent="."]
+position = Vector2(577, 324)
+texture = ExtResource("1_ll2xe")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 150
+theme_override_constants/margin_bottom = 50
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 0.756863)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 20
+
+[node name="LobbyLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "ЛОББИ МАТЧА"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlayersContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Player_1" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/HBoxContainer/PlayersContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Player 1"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Player_2" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Player 1"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GoalsCountSetting" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="GoalsCountLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/GoalsCountSetting"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Количество голов:"
+
+[node name="GoalsCountInput" type="LineEdit" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/GoalsCountSetting"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MatchTimeSetting" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="MatchTimeLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/MatchTimeSetting"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Время матча"
+
+[node name="MatchTimeInput" type="LineEdit" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/MatchTimeSetting"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "fasdfasdfasdf"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_right = 20
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="joinLeftBtn" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+layout_mode = 2
+text = "Левая команда"
+
+[node name="joinRightBtn" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+layout_mode = 2
+text = "Правая команда"
+
+[node name="playBtn" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+layout_mode = 2
+text = "Играть"
+
+[node name="exitBtn" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+layout_mode = 2
+text = "Выход"
