@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://searvjtkcjr"]
+[gd_scene load_steps=3 format=3 uid="uid://searvjtkcjr"]
 
 [ext_resource type="Texture2D" uid="uid://b1ckm81hvwwa1" path="res://assets/field/FootballGround.png" id="1_ll2xe"]
+[ext_resource type="Script" uid="uid://72ytdb5fro2f" path="res://UI/lobby.gd" id="1_mvsv2"]
 
 [node name="Lobby" type="Control"]
 layout_mode = 3
@@ -9,6 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_mvsv2")
 
 [node name="FootballGround" type="Sprite2D" parent="."]
 position = Vector2(577, 324)
