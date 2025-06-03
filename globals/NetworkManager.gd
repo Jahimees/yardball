@@ -37,15 +37,26 @@ func register_player(peer_id = 1):
 	
 	if Globals.all_players[peer_id] == null:
 		Globals.all_players.append(peer_id)
+		Signals.TEAMS_CHANGED.emit()
+		
+		if Globals.left_team.size() < Globals.right_team.size():
+			Globals.left_team.append(peer_id)
+		else:
+			Globals.right_team.append(peer_id)
 
 @rpc("any_peer", "call_local", "reliable")	
 func unregister_player(peer_id):
-	Globals.all_players.remove_at(peer_id)
+	Globals.all_players.erase(peer_id)
+	if Globals.left_team[peer_id] != null:
+		Globals.left_team.erase(peer_id)
+	else:
+		Globals.right_team.erase(peer_id)
 
 func host():
 	multiplayer_peer.create_server(6005)
 	multiplayer.multiplayer_peer = multiplayer_peer
 	register_player.rpc_id(1, multiplayer_peer.get_unique_id())
+	get_tree().change_scene_to_file("res://UI/lobby.tscn")
 	#spawn_player.rpc_id(1, multiplayer_peer.get_unique_id())
 	
 func join(ip: String):
