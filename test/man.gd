@@ -5,6 +5,9 @@ extends CharacterBody2D
 var input = Vector2.ZERO
 var target_position = position
 
+func _enter_tree() -> void:
+	set_multiplayer_authority(name.to_int())
+
 func _physics_process(delta: float) -> void:
 	
 	if !is_multiplayer_authority():
