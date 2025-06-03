@@ -6,3 +6,5 @@ var right_goals: int = 0
 var left_team := {}
 var right_team := {}
 var all_players := {}
+
+var players := {}

@@ -19,11 +19,12 @@ func _on_peer_disconnected(peer_id):
 
 @rpc("any_peer", "call_local", "reliable")
 func spawn_player(peer_id):
-	if players[peer_id] == null:
+	if players.get(peer_id) == null:
 		var player_scene = load("res://game/player/player.tscn")
 		var player = player_scene.instantiate()
 		player.name = str(peer_id)
 		players[peer_id] = { "position": Vector2(400, 300) }
+		Globals.players[peer_id] = player
 
 @rpc("any_peer", "call_local", "reliable")
 func despawn_player(peer_id):

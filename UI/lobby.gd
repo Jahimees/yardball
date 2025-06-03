@@ -6,8 +6,6 @@ extends Control
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Signals.TEAMS_CHANGED.connect(_on_teams_changed)
-	
-	pass # Replace with function body.
 
 func _process(delta: float) -> void:
 	pass
@@ -29,4 +27,11 @@ func _on_teams_changed():
 		var label = Label.new()
 		label.text = str(player)
 		right_players_container.add_child(label)
+	
+func _on_play_btn_pressed() -> void:
+	change_scene.rpc()
+	
+@rpc("any_peer", "call_local")
+func change_scene():
+	get_tree().change_scene_to_file("res://game/game_field/game_field.tscn")
 	

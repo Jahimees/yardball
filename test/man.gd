@@ -16,7 +16,6 @@ func _physics_process(delta: float) -> void:
 		
 	input = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	
-	
 	velocity = input * speed
 	move_and_slide()
 	

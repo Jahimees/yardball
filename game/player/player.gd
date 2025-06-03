@@ -14,20 +14,39 @@ var can_reduce_stamina: bool = true
 var can_add_stamina: bool = true
 var add_cooldown_active: bool = false
 
+var target_position = Vector2(0,0)
+
+func _enter_tree() -> void:
+	set_multiplayer_authority(name.to_int())
+
 func _physics_process(delta: float) -> void:
+	if !is_multiplayer_authority():
+		position = position.lerp(target_position, delta * 10)
+		return
+	
 	velocity = Vector2(0, 0)
 	
 	var direction = (get_global_mouse_position() - self.global_position).normalized()
-	if not is_multiplayer_authority():
-		return
+	#if not is_multiplayer_authority():
+		#return
 	
-	if multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
-		sprint.rpc_id(1)
-		move.rpc_id(1, direction)
+	#if multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+	sprint()
+	move(direction)
 	
-		move_and_slide()
-	else:
-		print("PIZDA")
+		#move_and_slide()
+
+	#input = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	
+	#velocity = input * speed
+	move_and_slide()
+	
+	if multiplayer.is_server():
+		update_position.rpc(position)
+		
+@rpc("authority", "unreliable")
+func update_position(new_pos):
+	target_position = new_pos
 	
 @rpc("any_peer", "call_local", "reliable")
 func push_ball():

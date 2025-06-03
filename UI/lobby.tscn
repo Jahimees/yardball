@@ -142,3 +142,5 @@ text = "Играть"
 [node name="exitBtn" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
 layout_mode = 2
 text = "Выход"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/playBtn" to="." method="_on_play_btn_pressed"]
