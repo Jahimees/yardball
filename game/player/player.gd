@@ -24,13 +24,14 @@ func _physics_process(delta: float) -> void:
 		position = position.lerp(target_position, delta * 10)
 		return
 	
-	velocity = Vector2(0, 0)
+	
 	
 	var direction = (get_global_mouse_position() - self.global_position).normalized()
 	#if not is_multiplayer_authority():
 		#return
 	
 	#if multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+	velocity = Vector2(0, 0)
 	sprint()
 	move(direction)
 	
@@ -41,12 +42,16 @@ func _physics_process(delta: float) -> void:
 	#velocity = input * speed
 	move_and_slide()
 	
-	if multiplayer.is_server():
-		update_position.rpc(position)
+	#if multiplayer.is_server():
+	update_position.rpc(position)
 		
-@rpc("authority", "unreliable")
-func update_position(new_pos):
-	target_position = new_pos
+@rpc("any_peer", "unreliable_ordered")
+func update_position(new_position: Vector2) -> void:
+	position = new_position
+	if is_multiplayer_authority():
+		return  # Не обновляем себя
+		
+	target_position = new_position
 	
 @rpc("any_peer", "call_local", "reliable")
 func push_ball():
