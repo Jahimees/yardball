@@ -40,11 +40,8 @@ func update_position(new_position: Vector2) -> void:
 	
 @rpc("any_peer", "call_local", "reliable")
 func push_ball():
-	print("Должен пнуть")
 	if collision_body is Ball and !is_ball_pushed:
 		is_ball_pushed = true
-		print("Ну пнул")
-		print(velocity)
 		collision_body.apply_central_impulse(velocity * 1)
 		await get_tree().create_timer(0.3).timeout
 		is_ball_pushed = false

@@ -6,7 +6,6 @@ var players = {}
 
 func _ready() -> void:
 	for player_id in Globals.all_players:
-		print("SPAWN JOPTA")
 		NetworkManager.spawn_player.rpc(player_id)
 	
 	for player_id in Globals.players:
@@ -14,7 +13,6 @@ func _ready() -> void:
 
 func _on_right_goal_area_body_entered(body: Node2D) -> void:
 	if body is Ball:
-		print("ball")
 		Signals.right_goal.emit()
 
 
