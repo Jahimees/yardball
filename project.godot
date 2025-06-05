@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="yardball"
-run/main_scene="uid://djutivbypgy10"
+run/main_scene="uid://cpkn22pceqjo1"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 

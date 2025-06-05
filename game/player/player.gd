@@ -29,6 +29,7 @@ func _physics_process(delta: float) -> void:
 	velocity = Vector2(0, 0)
 	sprint()
 	move(direction)
+	push_ball()
 	move_and_slide()
 	
 	update_position.rpc(position)
@@ -43,6 +44,7 @@ func push_ball():
 	if collision_body is Ball and !is_ball_pushed:
 		is_ball_pushed = true
 		print("Ну пнул")
+		print(velocity)
 		collision_body.apply_central_impulse(velocity * 1)
 		await get_tree().create_timer(0.3).timeout
 		is_ball_pushed = false
@@ -112,7 +114,6 @@ func move(direction: Vector2):
 	
 func _on_collision_area_body_entered(body: Node2D) -> void:
 	collision_body = body
-	push_ball()
 
 func _on_collision_area_body_exited(body: Node2D) -> void:
 	collision_body = null
