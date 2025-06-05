@@ -14,7 +14,10 @@ var can_reduce_stamina: bool = true
 var can_add_stamina: bool = true
 var add_cooldown_active: bool = false
 
-var target_position = Vector2(0,0)
+@export var target_position = Vector2(0,0)
+
+func _ready() -> void:
+	Signals.move_player_to.connect(move_player_to)
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
@@ -114,3 +117,7 @@ func _on_collision_area_body_entered(body: Node2D) -> void:
 
 func _on_collision_area_body_exited(body: Node2D) -> void:
 	collision_body = null
+	
+func move_player_to(peer_id, new_position):
+	if peer_id == name.to_int():
+		position = new_position

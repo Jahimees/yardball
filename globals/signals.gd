@@ -4,4 +4,8 @@ signal left_goal
 signal right_goal
 signal reset #РЕАЛИЗОВАТЬ CALLBACK, А ТАКЖЕ ПРИСОЕДИНИИТЬ К ИГРОКАМ ДЛЯ УТСНОВКИ В СТАРТОВОЕ ПОЛОЖЕНИЕ
 
-signal TEAMS_CHANGED
+signal teams_changed
+
+signal reset_players_positions
+
+signal move_player_to(peer_id, position: Vector2)
