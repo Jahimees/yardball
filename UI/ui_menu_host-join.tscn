@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://baftg5j0fjkva"]
+[gd_scene load_steps=3 format=3 uid="uid://cjc30k71le742"]
 
 [ext_resource type="Script" uid="uid://b6y4if1ulje6w" path="res://UI/ui_menu_host_join.gd" id="1_dnd5s"]
 [ext_resource type="Texture2D" uid="uid://b1ckm81hvwwa1" path="res://assets/field/FootballGround.png" id="2_v516w"]

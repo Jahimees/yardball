@@ -6,13 +6,20 @@ var speed = 150.0
 var stamina = 100
 
 @onready var player_sprite = $AnimatedSprite2D
+@onready var stamina_cd: ProgressBar = $CanvasLayer/Control/HBoxContainer/StaminaContainer/Stamina
+@onready var smash_cd: ProgressBar = $CanvasLayer/Control/HBoxContainer/SmashContainer/SmashCD
+@onready var timer_smash: Timer = $TimerSmash
+@onready var timer_stamina: Timer = $TimerStamina
 
 @export var collision_body:Node = null
+var collision_body_smash:Node = null
 @export var is_ball_pushed = false
 
 var can_reduce_stamina: bool = true
 var can_add_stamina: bool = true
 var add_cooldown_active: bool = false
+var can_smash_ball: bool = false
+var is_smash_cd_active: bool = false
 
 @export var target_position = Vector2(0,0)
 
@@ -33,7 +40,9 @@ func _physics_process(delta: float) -> void:
 	sprint()
 	move(direction)
 	push_ball()
+	smash_ball()
 	move_and_slide()
+	update_cooldown()
 	
 	update_position.rpc(position)
 		
@@ -50,9 +59,17 @@ func push_ball():
 		is_ball_pushed = false
 
 @rpc("any_peer", "call_local", "reliable")
+func smash_ball():
+	if Input.is_action_just_pressed("Smash") and !is_smash_cd_active:
+		print("smash")
+		if can_smash_ball :
+			collision_body_smash.apply_impulse(velocity * 4)
+		activate_smash_colldown()
+
+@rpc("any_peer", "call_local", "reliable")
 func sprint():
 	if Input.is_action_pressed("sprint") and stamina > 0:
-		speed = 300
+		speed = 250
 		
 		if can_reduce_stamina:
 			reduce_stamina()
@@ -71,7 +88,7 @@ func sprint():
 
 @rpc("any_peer", "call_local", "reliable")
 func reduce_stamina():
-	stamina -= 10
+	stamina -= 5
 	can_reduce_stamina = false
 	get_tree().create_timer(0.1).timeout.connect(func():
 		can_reduce_stamina = true)
@@ -92,6 +109,15 @@ func activate_restore_cooldown():
 		add_cooldown_active = false
 		add_stamina()
 		)
+		
+func activate_smash_colldown():
+	is_smash_cd_active = true
+	can_smash_ball = false
+	timer_smash.start()
+	timer_smash.timeout.connect(
+		func():
+			is_smash_cd_active = false
+	)
 
 @rpc("any_peer", "call_local", "reliable")
 func move(direction: Vector2):
@@ -111,13 +137,29 @@ func move(direction: Vector2):
 	elif Input.is_action_pressed("move_right"):
 		velocity = direction.rotated(deg_to_rad(run_angle)) * speed
 	
+func update_cooldown():
+	smash_cd.value = timer_smash.time_left
+	stamina_cd.value = stamina
 	
 func _on_collision_area_body_entered(body: Node2D) -> void:
 	collision_body = body
 
 func _on_collision_area_body_exited(body: Node2D) -> void:
 	collision_body = null
+
 	
 func move_player_to(peer_id, new_position):
 	if peer_id == name.to_int():
 		position = new_position
+
+
+func _on_smash_area_body_entered(body: Node2D) -> void:
+	if body is Ball:
+		collision_body_smash = body
+		can_smash_ball = true
+
+func _on_smash_area_body_exited(body: Node2D) -> void:
+	if body is Ball:
+		collision_body_smash = null
+		can_smash_ball = false
+
