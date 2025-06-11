@@ -9,6 +9,9 @@ var current_speed
 var max_speed := 1.5
 var should_reset := false
 
+var last_update_time := 0.0
+var update_interval := 0.1
+
 var target_position = Vector2(0, 0)
 
 func _ready() -> void:
@@ -27,12 +30,17 @@ func _process(delta: float) -> void:
 	
 	ball_animation.speed_scale = animation_speed
 	
-	if multiplayer.is_server():
+	last_update_time += delta
+	if last_update_time >= update_interval:
 		update.rpc(position)
+		last_update_time = 0.0
 	
 	tail_emitting()
+	
+	if not multiplayer.is_server():
+		position = position.lerp(target_position, 0.2)
 
-@rpc("any_peer", "unreliable_ordered")
+@rpc("any_peer", "reliable", "call_local")
 func update(position):
 	target_position = position
 	
