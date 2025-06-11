@@ -31,8 +31,6 @@ func _process(delta: float) -> void:
 	update.rpc(position)
 	
 	tail_emitting()
-	
-	print(linear_velocity)
 
 @rpc("any_peer", "unreliable_ordered")
 func update(position1):
