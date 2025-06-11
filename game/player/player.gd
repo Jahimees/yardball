@@ -1,8 +1,9 @@
 extends CharacterBody2D
-
 class_name Player
 
-var speed = 150.0
+@export var speed = 150.0
+@export var sprint_speed = 250.0
+var current_speed = 150.0
 var stamina = 100
 
 @onready var player_sprite = $AnimatedSprite2D
@@ -13,177 +14,78 @@ var stamina = 100
 @onready var smash_light: PointLight2D = $SmashLight
 @onready var game_ui: Control = $CanvasLayer/Game_UI
 
-@export var collision_body:Node = null
-var collision_body_smash:Node = null
-@export var is_ball_pushed = false
-
 var can_reduce_stamina: bool = true
 var can_add_stamina: bool = true
 var add_cooldown_active: bool = false
 var can_smash_ball: bool = false
 var is_smash_cd_active: bool = false
 var is_game_ui_showed: bool = false
-
 var is_player_blocked = false
 
-@export var target_position = Vector2(0,0)
-
 func _ready() -> void:
-	Signals.move_player_to.connect(_on_move_player_to)
-	Signals.block_players.connect(func(is_blocked):
-		is_player_blocked = is_blocked
-	)
+	Signals.block_players.connect(func(is_blocked): is_player_blocked = is_blocked)
 	smash_light.energy = 0.0
+	current_speed = speed
 
 func _enter_tree() -> void:
-	set_multiplayer_authority(name.to_int())
+	set_multiplayer_authority(str(name).to_int())
 
 func _physics_process(delta: float) -> void:
-	if is_player_blocked:
-		return
-		
-	if !is_multiplayer_authority():
-		position = position.lerp(target_position, delta * 10)
+	if is_player_blocked or not is_multiplayer_authority():
 		return
 	
-	var direction = (get_global_mouse_position() - self.global_position).normalized()
+	var direction = (get_global_mouse_position() - global_position).normalized()
+	velocity = Vector2.ZERO
 	
-	velocity = Vector2(0, 0)
-	escape()
-	sprint()
-	move(direction)
-	push_ball()
-	smash_ball()
+	handle_movement(direction)
+	handle_stamina()
+	handle_ball_interaction()
+	
 	move_and_slide()
-	update_cooldown()
-	
-	update_position.rpc(position)
-		
-@rpc("any_peer", "unreliable_ordered")
-func update_position(new_position: Vector2) -> void:
-	target_position = new_position
-	
-@rpc("any_peer", "call_local", "reliable")
-func push_ball():
-	if collision_body is Ball and !is_ball_pushed:
-		is_ball_pushed = true
-		collision_body.apply_central_impulse(velocity * 1)
-		await get_tree().create_timer(0.3).timeout
-		is_ball_pushed = false
+	update_ui()
 
-@rpc("any_peer", "call_local", "reliable")
-func smash_ball():
-	if Input.is_action_just_pressed("Smash") and !is_smash_cd_active:
-		if can_smash_ball :
-			collision_body_smash.apply_impulse(velocity * 4)
-		activate_smash_colldown()
+func handle_movement(direction: Vector2) -> void:
+	var move_input = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	
+	if move_input != Vector2.ZERO:
+		var move_direction = direction.rotated(move_input.angle())
+		velocity = move_direction * current_speed
+		player_sprite.rotation = move_direction.angle()
 
-@rpc("any_peer", "call_local", "reliable")
-func sprint():
+func handle_stamina() -> void:
 	if Input.is_action_pressed("sprint") and stamina > 0:
-		speed = 250
-		
+		current_speed = sprint_speed
 		if can_reduce_stamina:
-			reduce_stamina()
-		
+			stamina -= 5
+			can_reduce_stamina = false
+			get_tree().create_timer(0.1).timeout.connect(func(): can_reduce_stamina = true)
 	else:
-		speed = 150
+		current_speed = speed
+		if stamina < 100 and can_add_stamina and not add_cooldown_active:
+			stamina += 10
+			can_add_stamina = false
+			get_tree().create_timer(0.3).timeout.connect(func(): can_add_stamina = true)
 		
-		if (stamina == 0 and !add_cooldown_active):
-			activate_restore_cooldown()
-	
-		if (stamina < 100):
-			if (can_add_stamina):
-				add_stamina()
-				
-	$StaminaLabel.text = str(stamina)
+	if stamina <= 0 and not add_cooldown_active:
+		add_cooldown_active = true
+		get_tree().create_timer(2.0).timeout.connect(func(): add_cooldown_active = false)
 
-@rpc("any_peer", "call_local", "reliable")
-func reduce_stamina():
-	stamina -= 5
-	can_reduce_stamina = false
-	get_tree().create_timer(0.1).timeout.connect(func():
-		can_reduce_stamina = true)
+func handle_ball_interaction() -> void:
+	if Input.is_action_just_pressed("Smash") and can_smash_ball and not is_smash_cd_active:
+		smash_ball.rpc()
+		is_smash_cd_active = true
+		timer_smash.start()
 
-@rpc("any_peer", "call_local", "reliable")
-func add_stamina():
-	stamina += 10
-	can_add_stamina = false
+@rpc("call_local", "reliable")
+func smash_ball() -> void:
+	# Логика удара по мячу будет в мяче, здесь только вызов сигнала
+	Signals.ball_smashed.emit(get_global_mouse_position().direction_to(global_position))
 
-	get_tree().create_timer(0.3).timeout.connect(func():
-		can_add_stamina = true
-		)
-
-func activate_restore_cooldown():
-	add_cooldown_active = true
-	can_add_stamina = false
-	get_tree().create_timer(2).timeout.connect(func():
-		add_cooldown_active = false
-		add_stamina()
-		)
-		
-func activate_smash_colldown():
-	is_smash_cd_active = true
-	can_smash_ball = false
-	timer_smash.start()
-	timer_smash.timeout.connect(
-		func():
-			is_smash_cd_active = false
-	)
-
-@rpc("any_peer", "call_local", "reliable")
-func move(direction: Vector2):
-	var run_angle = 90
-	player_sprite.rotate(player_sprite.get_angle_to(get_global_mouse_position()))
-	
-	if Input.is_action_pressed("move_forward"):
-		run_angle = 45
-		velocity = direction * speed
-	elif Input.is_action_pressed("move_back"):
-		run_angle = -45
-		direction = -1 * direction
-		velocity = direction * speed
-		
-	if Input.is_action_pressed("move_left"):
-		velocity = direction.rotated(deg_to_rad(-run_angle)) * speed
-	elif Input.is_action_pressed("move_right"):
-		velocity = direction.rotated(deg_to_rad(run_angle)) * speed
-	
-func update_cooldown():
-	smash_cd.value = 1.5 - timer_smash.time_left
+func update_ui() -> void:
 	stamina_cd.value = stamina
-	
-func _on_collision_area_body_entered(body: Node2D) -> void:
-	collision_body = body
+	smash_cd.value = timer_smash.time_left / timer_smash.wait_time * 100
+	game_ui.visible = is_game_ui_showed
 
-func _on_collision_area_body_exited(body: Node2D) -> void:
-	collision_body = null
-	
-func _on_move_player_to(peer_id, new_position):
-	if peer_id == name.to_int():
-		position = new_position
-
-func _on_smash_area_body_entered(body: Node2D) -> void:
-	if body is Ball:
-		collision_body_smash = body
-		can_smash_ball = true
-		if is_multiplayer_authority():
-			var tween = create_tween()
-			tween.tween_property(smash_light, "energy", 0.7, 0.1)
-
-func _on_smash_area_body_exited(body: Node2D) -> void:
-	if body is Ball:
-		collision_body_smash = null
-		can_smash_ball = false
-		if is_multiplayer_authority():
-			var tween = create_tween()
-			tween.tween_property(smash_light, "energy", 0.0, 0.2)
-
-func escape():
-	if Input.is_action_just_pressed("Escape"):
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("Escape"):
 		is_game_ui_showed = !is_game_ui_showed
-		
-	game_ui.show() if is_game_ui_showed else game_ui.hide()
-		
-func _on_game_ui_resume_pressed() -> void:
-	is_game_ui_showed = false
