@@ -27,7 +27,8 @@ func _process(delta: float) -> void:
 	
 	ball_animation.speed_scale = animation_speed
 	
-	update.rpc(position)
+	if multiplayer.is_server():
+		update.rpc(position)
 	
 	tail_emitting()
 

@@ -4,7 +4,6 @@ extends Control
 @onready var right_points: Label = $VerticalContainer/HprizontalContainer/RightPoints
 @onready var timer_label: Label = $VerticalContainer/HBoxContainer/TimerLabel
 @onready var timer: Timer = $Timer
-@onready var reset: Button = $VerticalContainer/Reset
 @onready var countdown_timer = $CountDownTimer
 @onready var countdown_label = $CountdownLabel
 
@@ -72,5 +71,4 @@ func update_score():
 
 func _on_reset_pressed() -> void:
 	timer.set_paused(false)
-	reset.hide()
 	Signals.reset.emit()
