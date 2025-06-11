@@ -67,7 +67,11 @@ func update_position(new_position: Vector2) -> void:
 func push_ball():
 	if collision_body is Ball and !is_ball_pushed:
 		is_ball_pushed = true
-		collision_body.apply_central_impulse(velocity * 1)
+		print('PUUUUSH')
+		collision_body.apply_impulse_from_player.rpc(velocity * 3)
+		#if multiplayer.is_server():
+			#collision_body.apply_impulse_from_player(velocity * 3)
+		#collision_body.apply_central_impulse(velocity * 20)
 		await get_tree().create_timer(0.3).timeout
 		is_ball_pushed = false
 
@@ -75,7 +79,7 @@ func push_ball():
 func smash_ball():
 	if Input.is_action_just_pressed("Smash") and !is_smash_cd_active:
 		if can_smash_ball :
-			collision_body_smash.apply_impulse(velocity * 4)
+			collision_body_smash.apply_central_impulse(velocity * 14)
 		activate_smash_colldown()
 
 @rpc("any_peer", "call_local", "reliable")

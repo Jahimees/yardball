@@ -4,7 +4,6 @@ class_name  Ball
 @onready var ball_animation: AnimatedSprite2D = $ballAnimation
 @onready var tail_particles: CPUParticles2D = $CPUParticles2D
 
-
 var current_speed
 var max_speed := 1.5
 var should_reset := false
@@ -19,8 +18,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 		
-	if not multiplayer.is_server():
-		position = position.lerp(target_position, 0.2)
+	#if not multiplayer.is_server():
+		#position = position.lerp(target_position, 0.2)
 		
 	if !multiplayer.is_server():
 		return
@@ -30,23 +29,28 @@ func _process(delta: float) -> void:
 	var animation_speed := lerpf(0.1, max_speed, speed_noralized)
 	ball_animation.speed_scale = animation_speed
 	
-	last_update_time += delta
-	if last_update_time >= update_interval:
-		update.rpc(position)
-		last_update_time = 0.0
+	#last_update_time += delta
+	#if last_update_time >= update_interval:
+		#update.rpc(position)
+		#last_update_time = 0.0
 	
 	tail_emitting()
 
-
 @rpc("any_peer", "reliable", "call_local")
-func update(position):
-	target_position = position
+func apply_impulse_from_player(velocity):
+	if multiplayer.is_server():
+		apply_central_impulse(velocity)
+	
+
+#@rpc("any_peer", "reliable", "call_local")
+#func update(position):
+	#target_position = position
 	
 func _on_reset_ball():
 	should_reset = true
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
-	if should_reset and multiplayer.is_server():
+	if should_reset:
 		reset_ball.rpc(state)
 
 @rpc("any_peer", "call_local", "reliable")
