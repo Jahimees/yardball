@@ -39,11 +39,15 @@ func _on_reset_ball():
 	should_reset = true
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
-	if should_reset:
-		state.transform.origin = Vector2(576, 322)
-		state.linear_velocity = Vector2.ZERO
-		state.angular_velocity = 0
-		should_reset = false
+	if should_reset and multiplayer.is_server():
+		reset_ball.rpc(state)
+
+@rpc("any_peer", "call_local", "reliable")
+func reset_ball(state: PhysicsDirectBodyState2D):
+	state.transform.origin = Vector2(576, 322)
+	state.linear_velocity = Vector2.ZERO
+	state.angular_velocity = 0
+	should_reset = false
 
 func tail_emitting():
 	if abs(linear_velocity) > Vector2(250, 250):
