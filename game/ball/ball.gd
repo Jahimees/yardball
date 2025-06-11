@@ -7,17 +7,16 @@ class_name  Ball
 
 var current_speed
 var max_speed := 1.5
+var should_reset := false
 
 var target_position = Vector2(0, 0)
 
 func _ready() -> void:
-	Signals.reset.connect(_on_reset_pressed)
+	Signals.reset_ball.connect(_on_reset_ball)
 
 func _process(delta: float) -> void:
-	#position = position.lerp(target_position, delta * 10)
 	
 	if !multiplayer.is_server():
-		#position = position.lerp(target_position, delta * 10)
 		return
 	
 	current_speed = linear_velocity.length()
@@ -31,15 +30,20 @@ func _process(delta: float) -> void:
 	update.rpc(position)
 	
 	tail_emitting()
-	
-	print(linear_velocity)
 
 @rpc("any_peer", "unreliable_ordered")
-func update(position1):
-	target_position = position1
+func update(position):
+	target_position = position
 	
-func _on_reset_pressed():
-	print("МЯЧЕГ ДОЛЖЕН БЫТЬ УТСАНОВЛЕН В НАЧАЛЬНОЕ ПОЛОЖЕНИЕ")
+func _on_reset_ball():
+	should_reset = true
+
+func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	if should_reset:
+		state.transform.origin = Vector2(100, 100)
+		state.linear_velocity = Vector2.ZERO
+		state.angular_velocity = 0
+		should_reset = false
 
 func tail_emitting():
 	if abs(linear_velocity) > Vector2(250, 250):

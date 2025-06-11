@@ -6,7 +6,6 @@ extends Control
 @onready var timer: Timer = $Timer
 @onready var reset: Button = $VerticalContainer/Reset
 
-
 func _ready() -> void:
 	Signals.left_goal.connect(_on_left_goal_scored)
 	Signals.right_goal.connect(_on_right_goal_scored)
@@ -18,11 +17,14 @@ func  _process(delta: float) -> void:
 	#timer_label.text = str(get_time_formatted(timer.time_left))
 
 func _on_left_goal_scored():
-	
+	Signals.reset_players_positions.emit()
+	Signals.reset_ball.emit()
 	if multiplayer.is_server():
 		add_score_left.rpc()
 	
 func _on_right_goal_scored():
+	Signals.reset_players_positions.emit()
+	Signals.reset_ball.emit()
 	if multiplayer.is_server():
 		add_score_right.rpc()
 
@@ -39,20 +41,6 @@ func add_score_right():
 func update_score():
 	left_points.text = str(Globals.left_goals)
 	right_points.text = str(Globals.right_goals)
-	
-	#var y_left_player = 100
-	#for player_id in Globals.left_team:
-		#var player = Globals.left_team.get(player_id)
-		#player.position = Vector2(100, y_left_player)
-		#y_left_player += 100
-	
-	#var y_right_player = 100	
-	#for player in Globals.right_team:
-		#player.position = Vector2(100, y_right_player)
-		#y_right_player += 100
-	#NetworkManager.reset_players_positions()
-	
-	Signals.reset_players_positions.emit()
 	
 	reset.show()
 	timer.set_paused(true)

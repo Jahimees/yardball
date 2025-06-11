@@ -24,7 +24,7 @@ var is_smash_cd_active: bool = false
 @export var target_position = Vector2(0,0)
 
 func _ready() -> void:
-	Signals.move_player_to.connect(move_player_to)
+	Signals.move_player_to.connect(_on_move_player_to)
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
@@ -61,7 +61,6 @@ func push_ball():
 @rpc("any_peer", "call_local", "reliable")
 func smash_ball():
 	if Input.is_action_just_pressed("Smash") and !is_smash_cd_active:
-		print("smash")
 		if can_smash_ball :
 			collision_body_smash.apply_impulse(velocity * 4)
 		activate_smash_colldown()
@@ -146,12 +145,10 @@ func _on_collision_area_body_entered(body: Node2D) -> void:
 
 func _on_collision_area_body_exited(body: Node2D) -> void:
 	collision_body = null
-
 	
-func move_player_to(peer_id, new_position):
+func _on_move_player_to(peer_id, new_position):
 	if peer_id == name.to_int():
 		position = new_position
-
 
 func _on_smash_area_body_entered(body: Node2D) -> void:
 	if body is Ball:
@@ -162,4 +159,3 @@ func _on_smash_area_body_exited(body: Node2D) -> void:
 	if body is Ball:
 		collision_body_smash = null
 		can_smash_ball = false
-
