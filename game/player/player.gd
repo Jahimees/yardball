@@ -22,16 +22,24 @@ var add_cooldown_active: bool = false
 var can_smash_ball: bool = false
 var is_smash_cd_active: bool = false
 
+var is_player_blocked = false
+
 @export var target_position = Vector2(0,0)
 
 func _ready() -> void:
 	Signals.move_player_to.connect(_on_move_player_to)
+	Signals.block_players.connect(func(is_blocked):
+		is_player_blocked = is_blocked
+	)
 	smash_light.energy = 0.0
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
 
 func _physics_process(delta: float) -> void:
+	if is_player_blocked:
+		return
+		
 	if !is_multiplayer_authority():
 		position = position.lerp(target_position, delta * 10)
 		return

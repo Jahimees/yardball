@@ -40,7 +40,7 @@ func _on_reset_ball():
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	if should_reset:
-		state.transform.origin = Vector2(100, 100)
+		state.transform.origin = Vector2(576, 322)
 		state.linear_velocity = Vector2.ZERO
 		state.angular_velocity = 0
 		should_reset = false
