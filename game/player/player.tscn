@@ -37,7 +37,7 @@ properties/2/spawn = true
 properties/2/replication_mode = 1
 
 [node name="Player" type="CharacterBody2D"]
-collision_mask = 6
+collision_mask = 7
 script = ExtResource("1_obar5")
 
 [node name="SmashLight" type="PointLight2D" parent="."]

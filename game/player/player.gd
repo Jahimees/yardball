@@ -162,15 +162,17 @@ func _on_smash_area_body_entered(body: Node2D) -> void:
 	if body is Ball:
 		collision_body_smash = body
 		can_smash_ball = true
-		var tween = create_tween()
-		tween.tween_property(smash_light, "energy", 0.7, 0.1)
+		if is_multiplayer_authority():
+			var tween = create_tween()
+			tween.tween_property(smash_light, "energy", 0.7, 0.1)
 
 func _on_smash_area_body_exited(body: Node2D) -> void:
 	if body is Ball:
 		collision_body_smash = null
 		can_smash_ball = false
-		var tween = create_tween()
-		tween.tween_property(smash_light, "energy", 0.0, 0.2)
+		if is_multiplayer_authority():
+			var tween = create_tween()
+			tween.tween_property(smash_light, "energy", 0.0, 0.2)
 
 func escape():
 	if Input.is_action_just_pressed("Escape"):
