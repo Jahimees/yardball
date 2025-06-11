@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://1pk5eaq61frw" path="res://UI/game_ui.gd" id="1_mp46i"]
 
 [node name="Game_UI" type="Control"]
+z_index = 100
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

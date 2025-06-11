@@ -26,11 +26,14 @@ func _on_goal_scored(goal_side):
 	
 	await do_slow_motion_effect()
 	
-	start_count_down_timer()
+	if multiplayer.is_server():
+		start_count_down_timer.rpc()
+		
 	Signals.reset_players_positions.emit()
 	Signals.reset_ball.emit()
 	Signals.block_players.emit(true)
-	
+
+@rpc("call_local", "any_peer")
 func start_count_down_timer():
 	is_countdown_timer_active = true
 	countdown_timer.start(3)
