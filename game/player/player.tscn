@@ -1,11 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://ch5as1n7a7sq5"]
+[gd_scene load_steps=9 format=3 uid="uid://ch5as1n7a7sq5"]
 
 [ext_resource type="Script" uid="uid://bhix6g17r2t2c" path="res://game/player/player.gd" id="1_obar5"]
+[ext_resource type="Texture2D" uid="uid://cl27kb13jnder" path="res://assets/players/circle.png" id="2_8soms"]
 [ext_resource type="Texture2D" uid="uid://ltup1fagcyjh" path="res://assets/players/blue/characterBlue.png" id="2_b2mth"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_a4w0n"]
-radius = 12.0
-height = 34.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_b2mth"]
+radius = 18.0278
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8soms"]
 radius = 11.0
@@ -39,11 +39,18 @@ properties/2/replication_mode = 1
 collision_mask = 6
 script = ExtResource("1_obar5")
 
+[node name="SmashLight" type="PointLight2D" parent="."]
+position = Vector2(6, 0)
+scale = Vector2(0.23, 0.23)
+energy = 0.7
+texture = ExtResource("2_8soms")
+
 [node name="SmashArea" type="Area2D" parent="."]
 collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SmashArea"]
-shape = SubResource("CapsuleShape2D_a4w0n")
+position = Vector2(5, 0)
+shape = SubResource("CircleShape2D_b2mth")
 
 [node name="CollisionArea" type="Area2D" parent="."]
 collision_mask = 6
@@ -90,25 +97,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="StaminaContainer" type="MarginContainer" parent="CanvasLayer/Control/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="Stamina" type="ProgressBar" parent="CanvasLayer/Control/HBoxContainer/StaminaContainer"]
-custom_minimum_size = Vector2(150, 30)
-layout_mode = 2
-value = 100.0
-show_percentage = false
-
-[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/StaminaContainer"]
-layout_mode = 2
-text = "Бег"
-horizontal_alignment = 1
-
 [node name="SmashContainer" type="MarginContainer" parent="CanvasLayer/Control/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
@@ -126,6 +114,25 @@ show_percentage = false
 [node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/SmashContainer"]
 layout_mode = 2
 text = "Ударить"
+horizontal_alignment = 1
+
+[node name="StaminaContainer" type="MarginContainer" parent="CanvasLayer/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Stamina" type="ProgressBar" parent="CanvasLayer/Control/HBoxContainer/StaminaContainer"]
+custom_minimum_size = Vector2(150, 30)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/StaminaContainer"]
+layout_mode = 2
+text = "Бег"
 horizontal_alignment = 1
 
 [node name="TimerSmash" type="Timer" parent="."]
