@@ -11,6 +11,7 @@ var stamina = 100
 @onready var timer_smash: Timer = $TimerSmash
 @onready var timer_stamina: Timer = $TimerStamina
 @onready var smash_light: PointLight2D = $SmashLight
+@onready var game_ui: Control = $CanvasLayer/Game_UI
 
 @export var collision_body:Node = null
 var collision_body_smash:Node = null
@@ -21,6 +22,7 @@ var can_add_stamina: bool = true
 var add_cooldown_active: bool = false
 var can_smash_ball: bool = false
 var is_smash_cd_active: bool = false
+var is_game_ui_showed: bool = false
 
 @export var target_position = Vector2(0,0)
 
@@ -39,6 +41,7 @@ func _physics_process(delta: float) -> void:
 	var direction = (get_global_mouse_position() - self.global_position).normalized()
 	
 	velocity = Vector2(0, 0)
+	escape()
 	sprint()
 	move(direction)
 	push_ball()
@@ -168,3 +171,12 @@ func _on_smash_area_body_exited(body: Node2D) -> void:
 		can_smash_ball = false
 		var tween = create_tween()
 		tween.tween_property(smash_light, "energy", 0.0, 0.2)
+
+func escape():
+	if Input.is_action_just_pressed("Escape"):
+		is_game_ui_showed = !is_game_ui_showed
+		
+	game_ui.show() if is_game_ui_showed else game_ui.hide()
+		
+func _on_game_ui_resume_pressed() -> void:
+	is_game_ui_showed = false
