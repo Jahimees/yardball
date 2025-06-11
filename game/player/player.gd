@@ -10,6 +10,7 @@ var stamina = 100
 @onready var smash_cd: ProgressBar = $CanvasLayer/Control/HBoxContainer/SmashContainer/SmashCD
 @onready var timer_smash: Timer = $TimerSmash
 @onready var timer_stamina: Timer = $TimerStamina
+@onready var smash_light: PointLight2D = $SmashLight
 
 @export var collision_body:Node = null
 var collision_body_smash:Node = null
@@ -25,6 +26,7 @@ var is_smash_cd_active: bool = false
 
 func _ready() -> void:
 	Signals.move_player_to.connect(_on_move_player_to)
+	smash_light.energy = 0.0
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
@@ -137,7 +139,7 @@ func move(direction: Vector2):
 		velocity = direction.rotated(deg_to_rad(run_angle)) * speed
 	
 func update_cooldown():
-	smash_cd.value = timer_smash.time_left
+	smash_cd.value = 1.5 - timer_smash.time_left
 	stamina_cd.value = stamina
 	
 func _on_collision_area_body_entered(body: Node2D) -> void:
@@ -154,8 +156,12 @@ func _on_smash_area_body_entered(body: Node2D) -> void:
 	if body is Ball:
 		collision_body_smash = body
 		can_smash_ball = true
+		var tween = create_tween()
+		tween.tween_property(smash_light, "energy", 0.7, 0.1)
 
 func _on_smash_area_body_exited(body: Node2D) -> void:
 	if body is Ball:
 		collision_body_smash = null
 		can_smash_ball = false
+		var tween = create_tween()
+		tween.tween_property(smash_light, "energy", 0.0, 0.2)
