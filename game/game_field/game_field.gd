@@ -21,12 +21,11 @@ func spawn_players():
 
 func _on_right_goal_area_body_entered(body: Node2D) -> void:
 	if body is Ball:
-		Signals.right_goal.emit()
-
-
+		Signals.goal.emit(Globals.GoalSideEnum.LEFT_GOAL)
+		
 func _on_left_goal_area_body_entered(body: Node2D) -> void:
 	if body is Ball:
-		Signals.left_goal.emit()
+		Signals.goal.emit(Globals.GoalSideEnum.RIGHT_GOAL)
 		
 func on_reset_players_positions():
 	var counter = 0

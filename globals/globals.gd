@@ -10,3 +10,8 @@ var players_lobby := {}
 var players := {}
 var left_team := {}
 var right_team := {}
+
+enum GoalSideEnum {
+	LEFT_GOAL = 0, 
+	RIGHT_GOAL = 1
+}

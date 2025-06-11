@@ -5,58 +5,62 @@ extends Control
 @onready var timer_label: Label = $VerticalContainer/HBoxContainer/TimerLabel
 @onready var timer: Timer = $Timer
 @onready var reset: Button = $VerticalContainer/Reset
+@onready var countdown_timer = $CountDownTimer
+@onready var countdown_label = $CountdownLabel
 
+var is_countdown_timer_active
 
 func _ready() -> void:
-	Signals.left_goal.connect(_on_left_goal_scored)
-	Signals.right_goal.connect(_on_right_goal_scored)
+	Signals.goal.connect(_on_goal_scored)
 	timer.start()
-	reset.hide()
 	
 func  _process(delta: float) -> void:
 	timer_label.text = "%02d:%02d" % [int(timer.time_left) / 60, int(timer.time_left) % 60]
+	if (is_countdown_timer_active):
+		countdown_label.text = str(int(countdown_timer.time_left) + 1)
 	#timer_label.text = str(get_time_formatted(timer.time_left))
 
-func _on_left_goal_scored():
-	
+func _on_goal_scored(goal_side):
 	if multiplayer.is_server():
-		add_score_left.rpc()
+		add_score.rpc(goal_side)
 	
-func _on_right_goal_scored():
-	if multiplayer.is_server():
-		add_score_right.rpc()
+	await do_slow_motion_effect()
+	
+	start_count_down_timer()
+	Signals.reset_players_positions.emit()
+	Signals.reset_ball.emit()
+	Signals.block_players.emit(true)
+	
+func start_count_down_timer():
+	is_countdown_timer_active = true
+	countdown_timer.start(3)
+	
+func _on_count_down_timer_timeout() -> void:
+	is_countdown_timer_active = false
+	countdown_label.text = ""
+	timer.set_paused(false)
+	Signals.block_players.emit(false)
+
+func do_slow_motion_effect():
+	var tween = create_tween()
+	tween.tween_property(Engine, "time_scale", 0.25, 0.8)
+	await get_tree().create_timer(1).timeout
+	tween = create_tween()
+	tween.tween_property(Engine, "time_scale", 1, 0)
 
 @rpc("call_local", "reliable")
-func add_score_left():
-	Globals.left_goals += 1
+func add_score(goal_side):
+	if goal_side == Globals.GoalSideEnum.LEFT_GOAL:
+		Globals.left_goals += 1
+	else:
+		Globals.right_goals += 1	
 	update_score()
 	
-@rpc("call_local", "reliable")
-func add_score_right():
-	Globals.right_goals += 1
-	update_score()
-
 func update_score():
 	left_points.text = str(Globals.left_goals)
 	right_points.text = str(Globals.right_goals)
 	
-	#var y_left_player = 100
-	#for player_id in Globals.left_team:
-		#var player = Globals.left_team.get(player_id)
-		#player.position = Vector2(100, y_left_player)
-		#y_left_player += 100
-	
-	#var y_right_player = 100	
-	#for player in Globals.right_team:
-		#player.position = Vector2(100, y_right_player)
-		#y_right_player += 100
-	#NetworkManager.reset_players_positions()
-	
-	Signals.reset_players_positions.emit()
-	
-	reset.show()
 	timer.set_paused(true)
-
 
 #func get_time_formatted(time_left: float) -> String:
 	#var minutes := int(time_left) / 60
