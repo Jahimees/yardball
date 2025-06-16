@@ -68,10 +68,7 @@ func push_ball():
 	if collision_body is Ball and !is_ball_pushed:
 		is_ball_pushed = true
 		print('PUUUUSH')
-		collision_body.apply_impulse_from_player.rpc(velocity * 3)
-		#if multiplayer.is_server():
-			#collision_body.apply_impulse_from_player(velocity * 3)
-		#collision_body.apply_central_impulse(velocity * 20)
+		collision_body.apply_impulse_from_player.rpc_id(1, velocity * 3)
 		await get_tree().create_timer(0.3).timeout
 		is_ball_pushed = false
 

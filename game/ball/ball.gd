@@ -17,31 +17,31 @@ func _ready() -> void:
 	Signals.reset_ball.connect(_on_reset_ball)
 
 func _process(delta: float) -> void:
-		
+	pass
+		#
 	#if not multiplayer.is_server():
 		#position = position.lerp(target_position, 0.2)
-		
-	if !multiplayer.is_server():
-		return
+		#
+	#if !multiplayer.is_server():
+		#return
 	
-	current_speed = linear_velocity.length()
-	var speed_noralized := clampf(current_speed/max_speed, 0.0, 0.7)
-	var animation_speed := lerpf(0.1, max_speed, speed_noralized)
-	ball_animation.speed_scale = animation_speed
+	#current_speed = linear_velocity.length()
+	#var speed_noralized := clampf(current_speed/max_speed, 0.0, 0.7)
+	#var animation_speed := lerpf(0.1, max_speed, speed_noralized)
+	#ball_animation.speed_scale = animation_speed
 	
 	#last_update_time += delta
 	#if last_update_time >= update_interval:
 		#update.rpc(position)
 		#last_update_time = 0.0
 	
-	tail_emitting()
+	#tail_emitting()
 
 @rpc("any_peer", "reliable", "call_local")
 func apply_impulse_from_player(velocity):
 	if multiplayer.is_server():
 		apply_central_impulse(velocity)
 	
-
 #@rpc("any_peer", "reliable", "call_local")
 #func update(position):
 	#target_position = position
