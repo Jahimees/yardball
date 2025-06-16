@@ -2,8 +2,8 @@ extends CharacterBody2D
 
 class_name Player
 
-var speed = 200.0
-var stamina = 100
+var speed = Globals.DEFAULT_PLAYER_SPEED
+var stamina = Globals.DEFAULT_PLAYER_STAMINA
 
 @onready var player_sprite = $AnimatedSprite2D
 @onready var stamina_cd: ProgressBar = $CanvasLayer/Control/HBoxContainer/StaminaContainer/Stamina
@@ -17,12 +17,17 @@ var stamina = 100
 var collision_body_smash:Node = null
 @export var is_ball_pushed = false
 
-var can_reduce_stamina: bool = true
-var can_add_stamina: bool = true
-var add_cooldown_active: bool = false
 var can_smash_ball: bool = false
 var is_smash_cd_active: bool = false
 var is_game_ui_showed: bool = false
+
+var is_stamina_timer_active: bool = false
+
+var player_stamina_state = RestoreStaminaState.CAN_RESTORE
+
+enum RestoreStaminaState {
+	RESTORE_COOLDOWN, CAN_RESTORE, SPRINT
+}
 
 var is_player_blocked = false
 
@@ -34,6 +39,11 @@ func _ready() -> void:
 		is_player_blocked = is_blocked
 	)
 	smash_light.energy = 0.0
+	timer_stamina.timeout.connect(func():
+		is_stamina_timer_active = false
+		if player_stamina_state == RestoreStaminaState.RESTORE_COOLDOWN:
+			player_stamina_state = RestoreStaminaState.CAN_RESTORE
+		)
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
@@ -67,58 +77,59 @@ func update_position(new_position: Vector2) -> void:
 func push_ball():
 	if collision_body is Ball and !is_ball_pushed:
 		is_ball_pushed = true
-		collision_body.apply_impulse_from_player.rpc_id(1, velocity * 2)
-		await get_tree().create_timer(0.3).timeout
+		collision_body.apply_impulse_from_player.rpc_id(1, velocity * Globals.PUSH_RATIO)
+		await get_tree().create_timer(Globals.DEFAULT_DELAY).timeout
 		is_ball_pushed = false
 
 @rpc("any_peer", "call_local", "reliable")
 func smash_ball():
 	if Input.is_action_just_pressed("Smash") and !is_smash_cd_active:
 		if can_smash_ball :
-			collision_body_smash.apply_impulse_from_player.rpc_id(1, velocity * 6)
+			collision_body_smash.apply_impulse_from_player.rpc_id(1, velocity * Globals.SMASH_RATIO)
 		activate_smash_colldown()
 
 @rpc("any_peer", "call_local", "reliable")
 func sprint():
-	if Input.is_action_pressed("sprint") and stamina > 0:
-		speed = 300
-		
-		if can_reduce_stamina:
-			reduce_stamina()
-		
-	else:
-		speed = 200
-		
-		if (stamina == 0 and !add_cooldown_active):
-			activate_restore_cooldown()
+	if (is_stamina_timer_active):
+		return
 	
-		if (stamina < 100):
-			if (can_add_stamina):
-				add_stamina()
+	if stamina == 0 and player_stamina_state != RestoreStaminaState.CAN_RESTORE:
+		player_stamina_state = RestoreStaminaState.RESTORE_COOLDOWN
+		
+	if Input.is_action_pressed("sprint") and stamina != 0:
+		player_stamina_state = RestoreStaminaState.SPRINT
+	elif stamina != 0:
+		player_stamina_state = RestoreStaminaState.CAN_RESTORE	
+		
+	if stamina < Globals.DEFAULT_PLAYER_STAMINA and player_stamina_state != RestoreStaminaState.RESTORE_COOLDOWN and player_stamina_state != RestoreStaminaState.SPRINT:
+		player_stamina_state = RestoreStaminaState.CAN_RESTORE
+	
+	match player_stamina_state:
+		RestoreStaminaState.SPRINT:
+			speed = Globals.SPRINT_PLAYER_SPEED
+			reduce_stamina()
+		RestoreStaminaState.RESTORE_COOLDOWN:
+			speed = Globals.DEFAULT_PLAYER_SPEED
+			activate_restore_cooldown()
+		RestoreStaminaState.CAN_RESTORE:
+			speed = Globals.DEFAULT_PLAYER_SPEED
+			add_stamina()
 
 @rpc("any_peer", "call_local", "reliable")
 func reduce_stamina():
-	stamina -= 5
-	can_reduce_stamina = false
-	get_tree().create_timer(0.1).timeout.connect(func():
-		can_reduce_stamina = true)
+	timer_stamina.start(0.1)
+	is_stamina_timer_active = true
+	stamina -= Globals.REDUCE_STAMINA_RATIO
 
 @rpc("any_peer", "call_local", "reliable")
 func add_stamina():
-	stamina += 10
-	can_add_stamina = false
-
-	get_tree().create_timer(0.3).timeout.connect(func():
-		can_add_stamina = true
-		)
+	stamina += Globals.RESTORE_STAMINA_RATIO
+	timer_stamina.start(Globals.DEFAULT_DELAY)
+	is_stamina_timer_active = true
 
 func activate_restore_cooldown():
-	add_cooldown_active = true
-	can_add_stamina = false
-	get_tree().create_timer(2).timeout.connect(func():
-		add_cooldown_active = false
-		add_stamina()
-		)
+	timer_stamina.start(2)
+	is_stamina_timer_active = true
 		
 func activate_smash_colldown():
 	is_smash_cd_active = true

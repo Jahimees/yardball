@@ -1,0 +1,146 @@
+[gd_scene load_steps=10 format=3 uid="uid://ch5as1n7a7sq5"]
+
+[ext_resource type="Script" uid="uid://bhix6g17r2t2c" path="res://game/player/player.gd" id="1_obar5"]
+[ext_resource type="Texture2D" uid="uid://cl27kb13jnder" path="res://assets/players/circle.png" id="2_8soms"]
+[ext_resource type="Texture2D" uid="uid://ltup1fagcyjh" path="res://assets/players/blue/characterBlue.png" id="2_b2mth"]
+[ext_resource type="PackedScene" uid="uid://b4rdiitf84aou" path="res://UI/game_ui.tscn" id="4_a4w0n"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b2mth"]
+radius = 20.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8soms"]
+radius = 11.0
+height = 32.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_obar5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_b2mth")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_b2mth"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_b2mth"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:is_ball_pushed")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("AnimatedSprite2D:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 5
+floor_stop_on_slope = false
+script = ExtResource("1_obar5")
+
+[node name="SmashLight" type="PointLight2D" parent="."]
+position = Vector2(6, 0)
+scale = Vector2(0.23, 0.23)
+energy = 0.7
+texture = ExtResource("2_8soms")
+
+[node name="SmashArea" type="Area2D" parent="."]
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SmashArea"]
+shape = SubResource("CircleShape2D_b2mth")
+
+[node name="CollisionArea" type="Area2D" parent="."]
+collision_mask = 6
+
+[node name="CollisionZone" type="CollisionShape2D" parent="CollisionArea"]
+shape = SubResource("CapsuleShape2D_8soms")
+debug_color = Color(0.281949, 0.631079, 5.77569e-07, 0.42)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_obar5")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_b2mth")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_b2mth")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="SmashContainer" type="MarginContainer" parent="CanvasLayer/Control/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="SmashCD" type="ProgressBar" parent="CanvasLayer/Control/HBoxContainer/SmashContainer"]
+custom_minimum_size = Vector2(150, 30)
+layout_mode = 2
+max_value = 1.5
+value = 1.5
+show_percentage = false
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/SmashContainer"]
+layout_mode = 2
+text = "Ударить"
+horizontal_alignment = 1
+
+[node name="StaminaContainer" type="MarginContainer" parent="CanvasLayer/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Stamina" type="ProgressBar" parent="CanvasLayer/Control/HBoxContainer/StaminaContainer"]
+custom_minimum_size = Vector2(150, 30)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/StaminaContainer"]
+layout_mode = 2
+text = "Бег"
+horizontal_alignment = 1
+
+[node name="Game_UI" parent="CanvasLayer" instance=ExtResource("4_a4w0n")]
+visible = false
+
+[node name="TimerSmash" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+
+[node name="TimerStamina" type="Timer" parent="."]
+
+[connection signal="body_entered" from="SmashArea" to="." method="_on_smash_area_body_entered"]
+[connection signal="body_exited" from="SmashArea" to="." method="_on_smash_area_body_exited"]
+[connection signal="body_entered" from="CollisionArea" to="." method="_on_collision_area_body_entered"]
+[connection signal="body_exited" from="CollisionArea" to="." method="_on_collision_area_body_exited"]
+[connection signal="resume_pressed" from="CanvasLayer/Game_UI" to="." method="_on_game_ui_resume_pressed"]
