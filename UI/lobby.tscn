@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://searvjtkcjr"]
+[gd_scene load_steps=5 format=3 uid="uid://searvjtkcjr"]
 
 [ext_resource type="Texture2D" uid="uid://b1ckm81hvwwa1" path="res://assets/field/FootballGround.png" id="1_ll2xe"]
 [ext_resource type="Script" uid="uid://72ytdb5fro2f" path="res://UI/lobby.gd" id="1_mvsv2"]
+[ext_resource type="Texture2D" uid="uid://c34wr27mwsoh2" path="res://assets/hud_ui/arrow1.png" id="3_wloxn"]
+[ext_resource type="Texture2D" uid="uid://cs52kidkign2e" path="res://assets/hud_ui/arrow2.png" id="4_mhaia"]
 
 [node name="Lobby" type="Control"]
 layout_mode = 3
@@ -29,118 +31,172 @@ theme_override_constants/margin_bottom = 50
 layout_mode = 2
 color = Color(0, 0, 0, 0.756863)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="CommonField" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+[node name="SceneTitle" type="MarginContainer" parent="MarginContainer/CommonField"]
 layout_mode = 2
 theme_override_constants/margin_top = 20
 
-[node name="LobbyLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer"]
+[node name="LobbyLabel" type="Label" parent="MarginContainer/CommonField/SceneTitle"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "ЛОББИ МАТЧА"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+[node name="CenterField" type="MarginContainer" parent="MarginContainer/CommonField"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CommonField/CenterField"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="LeftPlayersContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CommonField/CenterField/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Player_1" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/HBoxContainer/LeftPlayersContainer"]
+[node name="LeftPlayersContainer" type="VBoxContainer" parent="MarginContainer/CommonField/CenterField/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Player_1" type="Label" parent="MarginContainer/CommonField/CenterField/HBoxContainer/HBoxContainer/LeftPlayersContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Player 1"
+horizontal_alignment = 1
 
-[node name="RightPlayersContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/HBoxContainer"]
+[node name="RightPlayersContainer" type="VBoxContainer" parent="MarginContainer/CommonField/CenterField/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Player_2" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/HBoxContainer/RightPlayersContainer"]
+[node name="Player_2" type="Label" parent="MarginContainer/CommonField/CenterField/HBoxContainer/HBoxContainer/RightPlayersContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Player 1"
+horizontal_alignment = 1
 
-[node name="CurrentArray" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/HBoxContainer"]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/CommonField/CenterField/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_right = 10
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/CommonField/CenterField/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="GoalsCountSetting" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2"]
+[node name="GoalsCountSetting" type="HBoxContainer" parent="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 
-[node name="GoalsCountLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/GoalsCountSetting"]
+[node name="GoalsCountLabel" type="Label" parent="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/GoalsCountSetting"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 20
 text = "Количество голов:"
 
-[node name="GoalsCountInput" type="LineEdit" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/GoalsCountSetting"]
+[node name="GoalsCountInput" type="LineEdit" parent="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/GoalsCountSetting"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+theme_override_font_sizes/font_size = 22
+placeholder_text = "10"
+alignment = 1
+context_menu_enabled = false
+emoji_menu_enabled = false
+drag_and_drop_selection_enabled = false
+caret_blink = true
 
-[node name="MatchTimeSetting" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/GoalsCountSetting"]
 layout_mode = 2
 
-[node name="MatchTimeLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/MatchTimeSetting"]
+[node name="UpGoals" type="Button" parent="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/GoalsCountSetting/VBoxContainer"]
+layout_mode = 2
+icon = ExtResource("3_wloxn")
+
+[node name="DownGoals" type="Button" parent="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/GoalsCountSetting/VBoxContainer"]
+layout_mode = 2
+icon = ExtResource("4_mhaia")
+
+[node name="MatchTimeSetting" type="HBoxContainer" parent="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="MatchTimeLabel" type="Label" parent="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 20
-text = "Время матча"
+text = "Время матча (сек.)"
 
-[node name="MatchTimeInput" type="LineEdit" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2/MatchTimeSetting"]
+[node name="MatchTimeInput" type="LineEdit" parent="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "fasdfasdfasdf"
+size_flags_stretch_ratio = 0.5
+theme_override_font_sizes/font_size = 22
+text = "120"
+alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting"]
 layout_mode = 2
-theme_override_constants/margin_right = 20
 
-[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+[node name="UpTime" type="Button" parent="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/VBoxContainer"]
+layout_mode = 2
+icon = ExtResource("3_wloxn")
+
+[node name="DownTime" type="Button" parent="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/VBoxContainer"]
+layout_mode = 2
+icon = ExtResource("4_mhaia")
+
+[node name="BottomButtons" type="MarginContainer" parent="MarginContainer/CommonField"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer3"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CommonField/BottomButtons"]
 layout_mode = 2
-size_flags_vertical = 10
+size_flags_vertical = 8
 
-[node name="joinLeftBtn" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+[node name="joinLeftBtn" type="Button" parent="MarginContainer/CommonField/BottomButtons/HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Левая команда"
 
-[node name="joinRightBtn" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+[node name="Tabulator2" type="Control" parent="MarginContainer/CommonField/BottomButtons/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_stretch_ratio = 0.5
+
+[node name="joinRightBtn" type="Button" parent="MarginContainer/CommonField/BottomButtons/HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "Правая команда"
 
-[node name="playBtn" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+[node name="Tabulator" type="Control" parent="MarginContainer/CommonField/BottomButtons/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="exitBtn" type="Button" parent="MarginContainer/CommonField/BottomButtons/HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Назад
+"
+
+[node name="Tabulator3" type="Control" parent="MarginContainer/CommonField/BottomButtons/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_stretch_ratio = 0.5
+
+[node name="playBtn" type="Button" parent="MarginContainer/CommonField/BottomButtons/HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "Играть"
 
-[node name="exitBtn" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
-layout_mode = 2
-text = "Выход"
-
-[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer/playBtn" to="." method="_on_play_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/GoalsCountSetting/VBoxContainer/UpGoals" to="." method="_on_up_pressed"]
+[connection signal="pressed" from="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/GoalsCountSetting/VBoxContainer/DownGoals" to="." method="_on_down_pressed"]
+[connection signal="pressed" from="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/VBoxContainer/UpTime" to="." method="_on_up_time_pressed"]
+[connection signal="pressed" from="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/VBoxContainer/DownTime" to="." method="_on_down_time_pressed"]
+[connection signal="pressed" from="MarginContainer/CommonField/BottomButtons/HBoxContainer/exitBtn" to="." method="_on_exit_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/CommonField/BottomButtons/HBoxContainer/playBtn" to="." method="_on_play_btn_pressed"]
