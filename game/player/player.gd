@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 class_name Player
 
-var speed = 150.0
+var speed = 200.0
 var stamina = 100
 
 @onready var player_sprite = $AnimatedSprite2D
@@ -75,19 +75,19 @@ func push_ball():
 func smash_ball():
 	if Input.is_action_just_pressed("Smash") and !is_smash_cd_active:
 		if can_smash_ball :
-			collision_body_smash.apply_central_impulse(velocity * 7)
+			collision_body_smash.apply_impulse_from_player.rpc_id(1, velocity * 6)
 		activate_smash_colldown()
 
 @rpc("any_peer", "call_local", "reliable")
 func sprint():
 	if Input.is_action_pressed("sprint") and stamina > 0:
-		speed = 250
+		speed = 300
 		
 		if can_reduce_stamina:
 			reduce_stamina()
 		
 	else:
-		speed = 150
+		speed = 200
 		
 		if (stamina == 0 and !add_cooldown_active):
 			activate_restore_cooldown()
