@@ -6,6 +6,7 @@ extends Control
 @onready var timer: Timer = $Timer
 @onready var countdown_timer = $CountDownTimer
 @onready var countdown_label = $CountdownLabel
+@onready var fps_counter = $VerticalContainer/FPSCounter
 
 var is_countdown_timer_active
 
@@ -15,6 +16,7 @@ func _ready() -> void:
 	
 func  _process(delta: float) -> void:
 	timer_label.text = "%02d:%02d" % [int(timer.time_left) / 60, int(timer.time_left) % 60]
+	fps_counter.text = str(Engine.get_frames_per_second())
 	if (is_countdown_timer_active):
 		countdown_label.text = str(int(countdown_timer.time_left) + 1)
 	#timer_label.text = str(get_time_formatted(timer.time_left))

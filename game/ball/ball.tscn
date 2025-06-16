@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://d33i88gcp4jxp"]
+[gd_scene load_steps=11 format=3 uid="uid://d33i88gcp4jxp"]
 
 [ext_resource type="Texture2D" uid="uid://bydyrfp3srk15" path="res://assets/ball/ball-sheet.png" id="1_sqgsq"]
 [ext_resource type="Script" uid="uid://cn50gcqgk5xem" path="res://game/ball/ball.gd" id="1_wbr61"]
@@ -58,20 +58,6 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_wbr61"]
-properties/0/path = NodePath(".:position")
-properties/0/spawn = true
-properties/0/replication_mode = 1
-properties/1/path = NodePath(".:rotation")
-properties/1/spawn = true
-properties/1/replication_mode = 1
-properties/2/path = NodePath(".:linear_velocity")
-properties/2/spawn = true
-properties/2/replication_mode = 1
-properties/3/path = NodePath(".:angular_velocity")
-properties/3/spawn = true
-properties/3/replication_mode = 1
-
 [node name="ball" type="RigidBody2D"]
 collision_layer = 2
 collision_mask = 5
@@ -91,10 +77,6 @@ scale = Vector2(0.15625, 0.15625)
 sprite_frames = SubResource("SpriteFrames_n5ivy")
 animation = &"rotation"
 autoplay = "rotation"
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-delta_interval = 0.5
-replication_config = SubResource("SceneReplicationConfig_wbr61")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 modulate = Color(0.173154, 0.383307, 0.726761, 1)

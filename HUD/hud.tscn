@@ -55,6 +55,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "00:00"
 
+[node name="FPSCounter" type="Label" parent="VerticalContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+
 [node name="CountdownLabel" type="Label" parent="."]
 layout_mode = 2
 offset_top = 237.0
