@@ -1,5 +1,8 @@
 extends Node
 
+var win_goals: int = 0
+var game_time: int = 0
+
 var left_goals: int = 0
 var right_goals: int = 0
 

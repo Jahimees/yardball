@@ -37,36 +37,30 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.490196)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/ColorRect"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 100.0
-offset_top = 56.0
-offset_right = -99.0
-offset_bottom = -56.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MargContTitle" type="MarginContainer" parent="Control/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/ColorRect/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="MargContTitle" type="MarginContainer" parent="Control/ColorRect/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="Title" type="Label" parent="Control/VBoxContainer/MargContTitle"]
+[node name="Title" type="Label" parent="Control/ColorRect/MarginContainer/VBoxContainer/MargContTitle"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 text = "YardBall"
 horizontal_alignment = 1
 
-[node name="MargContStart" type="MarginContainer" parent="Control/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 40
-theme_override_constants/margin_bottom = 40
-
-[node name="ButtonHost" type="Button" parent="Control/VBoxContainer/MargContStart"]
+[node name="ButtonHost" type="Button" parent="Control/ColorRect/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -74,15 +68,10 @@ size_flags_vertical = 4
 theme_override_font_sizes/font_size = 45
 text = "Создать"
 
-[node name="MargContQuit" type="MarginContainer" parent="Control/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_top = 40
-theme_override_constants/margin_bottom = 40
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/VBoxContainer/MargContQuit"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/ColorRect/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="ButtonConnect" type="Button" parent="Control/VBoxContainer/MargContQuit/VBoxContainer"]
+[node name="ButtonConnect" type="Button" parent="Control/ColorRect/MarginContainer/VBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -90,12 +79,21 @@ size_flags_vertical = 4
 theme_override_font_sizes/font_size = 45
 text = "Присоединиться"
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/VBoxContainer/MargContQuit/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/ColorRect/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="ip_address" type="LineEdit" parent="Control/VBoxContainer/MargContQuit/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/ColorRect/MarginContainer/VBoxContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="Control/ColorRect/MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "IP-адрес хоста: "
+
+[node name="ip_address" type="LineEdit" parent="Control/ColorRect/MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -104,5 +102,14 @@ theme_override_font_sizes/font_size = 30
 text = "localhost"
 alignment = 1
 
-[connection signal="pressed" from="Control/VBoxContainer/MargContStart/ButtonHost" to="." method="_on_button_host_pressed"]
-[connection signal="pressed" from="Control/VBoxContainer/MargContQuit/VBoxContainer/ButtonConnect" to="." method="_on_button_connect_pressed"]
+[node name="ButtonReturn" type="Button" parent="Control/ColorRect/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 45
+text = "Назад"
+
+[connection signal="pressed" from="Control/ColorRect/MarginContainer/VBoxContainer/ButtonHost" to="." method="_on_button_host_pressed"]
+[connection signal="pressed" from="Control/ColorRect/MarginContainer/VBoxContainer/VBoxContainer/ButtonConnect" to="." method="_on_button_connect_pressed"]
+[connection signal="pressed" from="Control/ColorRect/MarginContainer/VBoxContainer/ButtonReturn" to="." method="_on_button_return_pressed"]
