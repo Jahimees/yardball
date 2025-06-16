@@ -1,6 +1,6 @@
 extends Control
 
-@onready var ip_address: LineEdit = $Control/VBoxContainer/MargContQuit/VBoxContainer/MarginContainer/ip_address
+@onready var ip_address: LineEdit = $Control/ColorRect/MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/ip_address
 
 func _on_button_host_pressed() -> void:
 	NetworkManager.host()
