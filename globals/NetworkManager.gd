@@ -10,12 +10,10 @@ func _ready() -> void:
 func _on_peer_connected(peer_id):
 	print("Client connected: ", peer_id)
 	register_player.rpc(peer_id)
-	#spawn_player.rpc(peer_id)
 
 func _on_peer_disconnected(peer_id):
 	print("Client disconnected: ", peer_id)
 	unregister_player.rpc(peer_id)
-	#despawn_player.rpc(peer_id)
 
 @rpc("any_peer", "call_local", "reliable")
 func register_player_for_game(peer_id):

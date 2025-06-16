@@ -26,7 +26,8 @@ func _on_right_goal_area_body_entered(body: Node2D) -> void:
 func _on_left_goal_area_body_entered(body: Node2D) -> void:
 	if body is Ball:
 		Signals.goal.emit(Globals.GoalSideEnum.RIGHT_GOAL)
-		
+
+#TODO move to globals. adaptive?
 func on_reset_players_positions():
 	var counter = 0
 	var spawn_y_pos = 324

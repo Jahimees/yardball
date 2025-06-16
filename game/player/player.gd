@@ -113,13 +113,14 @@ func sprint():
 			activate_restore_cooldown()
 		RestoreStaminaState.CAN_RESTORE:
 			speed = Globals.DEFAULT_PLAYER_SPEED
-			add_stamina()
+			if stamina < Globals.DEFAULT_PLAYER_STAMINA:
+				add_stamina()
 
 @rpc("any_peer", "call_local", "reliable")
 func reduce_stamina():
+	stamina -= Globals.REDUCE_STAMINA_RATIO
 	timer_stamina.start(0.1)
 	is_stamina_timer_active = true
-	stamina -= Globals.REDUCE_STAMINA_RATIO
 
 @rpc("any_peer", "call_local", "reliable")
 func add_stamina():
