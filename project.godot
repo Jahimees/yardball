@@ -21,6 +21,10 @@ Globals="*res://globals/globals.gd"
 Signals="*res://globals/signals.gd"
 NetworkManager="*res://globals/NetworkManager.gd"
 
+[editor]
+
+movie_writer/fps=144
+
 [input]
 
 move_forward={

@@ -1,9 +1,8 @@
 extends Control
-
 	
 @onready var left_players_container = $MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/HBoxContainer/LeftPlayersContainer
 @onready var right_players_container = $MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer/HBoxContainer/RightPlayersContainer
-# Called when the node enters the scene tree for the first time.
+
 func _ready() -> void:
 	Signals.teams_changed.connect(_on_teams_changed)
 

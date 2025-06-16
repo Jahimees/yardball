@@ -19,7 +19,6 @@ func  _process(delta: float) -> void:
 	fps_counter.text = str(Engine.get_frames_per_second())
 	if (is_countdown_timer_active):
 		countdown_label.text = str(int(countdown_timer.time_left) + 1)
-	#timer_label.text = str(get_time_formatted(timer.time_left))
 
 func _on_goal_scored(goal_side):
 	if multiplayer.is_server():
@@ -65,11 +64,6 @@ func update_score():
 	right_points.text = str(Globals.right_goals)
 	
 	timer.set_paused(true)
-
-#func get_time_formatted(time_left: float) -> String:
-	#var minutes := int(time_left) / 60
-	#var seconds := int(time_left) % 60
-	#return "%02d:%02d" % [minutes, seconds]
 
 func _on_reset_pressed() -> void:
 	timer.set_paused(false)

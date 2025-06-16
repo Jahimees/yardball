@@ -9,7 +9,7 @@ var max_speed := 1.5
 var should_reset := false
 
 var last_update_time := 0.0
-var update_interval := 0.1
+var update_interval := 0.00000000000000000001
 
 var target_position = Vector2(0, 0)
 
@@ -17,25 +17,12 @@ func _ready() -> void:
 	Signals.reset_ball.connect(_on_reset_ball)
 
 func _process(delta: float) -> void:
-	#if not multiplayer.is_server():
-		#position = position.lerp(target_position, 0.2)
-		#
 	if multiplayer.is_server():
-		update.rpc(position)
+		last_update_time += delta
+		if last_update_time >= update_interval:
+			last_update_time = 0.0
+			update.rpc(position)
 	
-		#return
-	
-	#current_speed = linear_velocity.length()
-	#var speed_noralized := clampf(current_speed/max_speed, 0.0, 0.7)
-	#var animation_speed := lerpf(0.1, max_speed, speed_noralized)
-	#ball_animation.speed_scale = animation_speed
-	
-	#last_update_time += delta
-	#if last_update_time >= update_interval:
-		#last_update_time = 0.0
-	
-	#tail_emitting()
-
 @rpc("any_peer", "reliable", "call_local")
 func apply_impulse_from_player(velocity):
 	if multiplayer.is_server():
@@ -57,7 +44,6 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		state.linear_velocity = Vector2.ZERO
 		state.angular_velocity = 0
 		should_reset = false
-		#reset_ball.rpc(state)
 
 func obrabotatb_myach():
 	pass
