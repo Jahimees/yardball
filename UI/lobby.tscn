@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://searvjtkcjr"]
+[gd_scene load_steps=6 format=3 uid="uid://searvjtkcjr"]
 
 [ext_resource type="Texture2D" uid="uid://b1ckm81hvwwa1" path="res://assets/field/FootballGround.png" id="1_ll2xe"]
 [ext_resource type="Script" uid="uid://72ytdb5fro2f" path="res://UI/lobby.gd" id="1_mvsv2"]
 [ext_resource type="Texture2D" uid="uid://c34wr27mwsoh2" path="res://assets/hud_ui/arrow1.png" id="3_wloxn"]
 [ext_resource type="Texture2D" uid="uid://cs52kidkign2e" path="res://assets/hud_ui/arrow2.png" id="4_mhaia"]
+[ext_resource type="PackedScene" uid="uid://cl1wrbafcsmjk" path="res://UI/debug/debug_console.tscn" id="5_mhaia"]
 
 [node name="Lobby" type="Control"]
 layout_mode = 3
@@ -17,6 +18,9 @@ script = ExtResource("1_mvsv2")
 [node name="FootballGround" type="Sprite2D" parent="."]
 position = Vector2(577, 324)
 texture = ExtResource("1_ll2xe")
+
+[node name="DebugConsole" parent="." instance=ExtResource("5_mhaia")]
+layout_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0

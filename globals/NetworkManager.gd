@@ -9,6 +9,7 @@ func _ready() -> void:
 
 func _on_peer_connected(peer_id):
 	print("Client connected: ", peer_id)
+		
 	register_player.rpc(peer_id)
 
 func _on_peer_disconnected(peer_id):
@@ -67,5 +68,6 @@ func host():
 	
 func join(ip: String):
 	multiplayer_peer.create_client(ip, 6005)
+	print(multiplayer_peer.ConnectionStatus)
 	multiplayer.multiplayer_peer = multiplayer_peer
 	get_tree().change_scene_to_file("res://UI/lobby.tscn")
