@@ -7,10 +7,10 @@
 [ext_resource type="PackedScene" uid="uid://psm5qtp5h38i" path="res://HUD/hud.tscn" id="5_oiqg3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_467e1"]
-size = Vector2(1155, 16.75)
+size = Vector2(1155, 49)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c38ol"]
-size = Vector2(20, 673)
+size = Vector2(54, 673)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u8ksv"]
 size = Vector2(68.25, 5)
@@ -42,7 +42,7 @@ collision_layer = 4
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="borders/top_border"]
-position = Vector2(575.5, -8.375)
+position = Vector2(575.5, -24.5)
 shape = SubResource("RectangleShape2D_467e1")
 
 [node name="bot_border" type="StaticBody2D" parent="borders"]
@@ -50,7 +50,7 @@ collision_layer = 4
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="borders/bot_border"]
-position = Vector2(575.5, 656.25)
+position = Vector2(575.5, 672.25)
 shape = SubResource("RectangleShape2D_467e1")
 
 [node name="left_border" type="StaticBody2D" parent="borders"]
@@ -59,7 +59,7 @@ collision_layer = 4
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="borders/left_border"]
-position = Vector2(-9, 323)
+position = Vector2(-26, 323)
 shape = SubResource("RectangleShape2D_c38ol")
 
 [node name="right_border" type="StaticBody2D" parent="borders"]
@@ -67,7 +67,7 @@ collision_layer = 4
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="borders/right_border"]
-position = Vector2(1162, 323)
+position = Vector2(1179, 323)
 shape = SubResource("RectangleShape2D_c38ol")
 
 [node name="right_gate" type="Node" parent="."]

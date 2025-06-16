@@ -1,16 +1,10 @@
 extends RigidBody2D
-class_name  Ball
+class_name Ball
 
-@onready var ball_animation: AnimatedSprite2D = $ballAnimation
 @onready var tail_particles: CPUParticles2D = $CPUParticles2D
 
-var current_speed
-var max_speed := 1.5
 var should_reset := false
-
 var last_update_time := 0.0
-var update_interval := 0.00000000000000000001
-
 var target_position = Vector2(0, 0)
 
 func _ready() -> void:
@@ -19,9 +13,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if multiplayer.is_server():
 		last_update_time += delta
-		if last_update_time >= update_interval:
+		if last_update_time >= Globals.SYNC_UPDATE_INTERVAL:
 			last_update_time = 0.0
 			update.rpc(position)
+	tail_emitting()
 	
 @rpc("any_peer", "reliable", "call_local")
 func apply_impulse_from_player(velocity):
@@ -40,20 +35,10 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		state.transform.origin = Vector2(target_position.x, target_position.y)
 		
 	if should_reset:
-		state.transform.origin = Vector2(576, 322)
+		state.transform.origin = Globals.GAME_FIELD_CENTER_POS
 		state.linear_velocity = Vector2.ZERO
 		state.angular_velocity = 0
 		should_reset = false
-
-func obrabotatb_myach():
-	pass
-
-@rpc("any_peer", "call_local", "reliable")
-func reset_ball(state: PhysicsDirectBodyState2D):
-	state.transform.origin = Vector2(576, 322)
-	state.linear_velocity = Vector2.ZERO
-	state.angular_velocity = 0
-	should_reset = false
 
 func tail_emitting():
 	if abs(linear_velocity) > Vector2(250, 250):
