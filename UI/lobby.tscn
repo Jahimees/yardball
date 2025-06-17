@@ -104,8 +104,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 theme_override_font_sizes/font_size = 22
-placeholder_text = "10"
+text = "10"
 alignment = 1
+editable = false
 context_menu_enabled = false
 emoji_menu_enabled = false
 drag_and_drop_selection_enabled = false
@@ -138,6 +139,7 @@ size_flags_stretch_ratio = 0.5
 theme_override_font_sizes/font_size = 22
 text = "120"
 alignment = 1
+editable = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting"]
 layout_mode = 2

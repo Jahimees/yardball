@@ -10,7 +10,6 @@ extends Control
 var is_countdown_timer_active
 
 func _ready() -> void:
-	#timer.wait_time = Globals.game_time
 	Signals.goal.connect(_on_goal_scored)
 	timer.start()
 	

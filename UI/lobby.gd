@@ -2,18 +2,28 @@ extends Control
 
 @onready var right_players_container: VBoxContainer = $MarginContainer/CommonField/CenterField/HBoxContainer/HBoxContainer/RightPlayersContainer
 @onready var left_players_container: VBoxContainer = $MarginContainer/CommonField/CenterField/HBoxContainer/HBoxContainer/LeftPlayersContainer
+
 @onready var goals_count_input: LineEdit = $MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/GoalsCountSetting/GoalsCountInput
 @onready var match_time_input: LineEdit = $MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/MatchTimeInput
 
+@onready var play_btn: Button = $MarginContainer/CommonField/BottomButtons/HBoxContainer/playBtn
+@onready var up_goals: Button = $MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/GoalsCountSetting/VBoxContainer/UpGoals
+@onready var down_goals: Button = $MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/GoalsCountSetting/VBoxContainer/DownGoals
+@onready var up_time: Button = $MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/VBoxContainer/UpTime
+@onready var down_time: Button = $MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/VBoxContainer/DownTime
+
 func _ready() -> void:
 	if !multiplayer.is_server():
-		match_time_input.editable = false
-		goals_count_input.editable = false
+		up_goals.disabled = true
+		down_goals.disabled = true
+		up_time.disabled = true
+		down_time.disabled = true
+		play_btn.disabled = true
 	Signals.teams_changed.connect(_on_teams_changed)
 
 func _process(delta: float) -> void:
 	pass
-	
+		
 func _on_teams_changed():
 
 	for node in left_players_container.get_children():
@@ -37,8 +47,6 @@ func change_scene():
 	get_tree().change_scene_to_file("res://game/game_field/game_field.tscn")
 
 func _on_play_btn_pressed() -> void:
-	#if multiplayer.is_server():
-		#Globals.game_time = match_time_input.text.to_int()
 	change_scene.rpc()
 	
 func _on_exit_btn_pressed() -> void:
@@ -47,17 +55,29 @@ func _on_exit_btn_pressed() -> void:
 func _on_up_pressed() -> void:
 	if multiplayer.is_server():
 		goals_count_input.text = str(goals_count_input.text.to_int() + 1)
+		set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
 
 func _on_down_pressed() -> void:
 	if multiplayer.is_server():
 		if goals_count_input.text.to_int() > 0:
 			goals_count_input.text = str(goals_count_input.text.to_int() - 1)
+		set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
 
 func _on_up_time_pressed() -> void:
 	if multiplayer.is_server():
 		match_time_input.text = str(match_time_input.text.to_int() + 10)
+		set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
 
 func _on_down_time_pressed() -> void:
 	if multiplayer.is_server():
 		if match_time_input.text.to_int() > 0:
 			match_time_input.text = str(match_time_input.text.to_int() - 10)
+		set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
+
+@rpc("any_peer", "call_local", "reliable")
+func set_game_parameters(goals, time):
+	Globals.win_goals = goals.to_int()
+	Globals.game_time = time.to_int()
+	if !multiplayer.is_server():
+		goals_count_input.text = str(Globals.win_goals)
+		match_time_input.text = str(Globals.game_time)
