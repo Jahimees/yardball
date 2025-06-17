@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://ch5as1n7a7sq5"]
+[gd_scene load_steps=11 format=3 uid="uid://ch5as1n7a7sq5"]
 
 [ext_resource type="Script" uid="uid://bhix6g17r2t2c" path="res://game/player/player.gd" id="1_obar5"]
 [ext_resource type="Texture2D" uid="uid://cl27kb13jnder" path="res://assets/players/circle.png" id="2_8soms"]
 [ext_resource type="Texture2D" uid="uid://ltup1fagcyjh" path="res://assets/players/blue/characterBlue.png" id="2_b2mth"]
+[ext_resource type="Texture2D" uid="uid://ly6wabkj8hyi" path="res://assets/players/white/characterWhite.png" id="4_5fytw"]
 [ext_resource type="PackedScene" uid="uid://b4rdiitf84aou" path="res://UI/game_ui.tscn" id="4_a4w0n"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b2mth"]
@@ -19,7 +20,15 @@ animations = [{
 "texture": ExtResource("2_b2mth")
 }],
 "loop": true,
-"name": &"idle",
+"name": &"blue_team",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_5fytw")
+}],
+"loop": true,
+"name": &"white_team",
 "speed": 5.0
 }]
 
@@ -62,7 +71,7 @@ debug_color = Color(0.281949, 0.631079, 5.77569e-07, 0.42)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_obar5")
-animation = &"idle"
+animation = &"white_team"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_b2mth")
