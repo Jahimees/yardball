@@ -1,6 +1,9 @@
 extends Node
 
-var win_goals: int = 0
+func _ready() -> void:
+	Signals.game_end.connect(_on_game_end)
+
+var win_goals: int = 1
 var game_time: int = 0
 
 var left_goals: int = 0
@@ -36,3 +39,20 @@ const RESTORE_STAMINA_RATIO := 10
 const SYNC_UPDATE_INTERVAL := 0.00000000000000000001
 
 const GAME_FIELD_CENTER_POS := Vector2(576, 322)
+
+func _on_game_end():
+	get_tree().change_scene_to_file("res://UI/ui_menu.tscn")
+	reset_game_vars()
+	if multiplayer.is_server():
+		NetworkManager.close_server.rpc()
+	
+func reset_game_vars():
+	players = {}
+	left_team = {}
+	right_team = {}
+	win_goals = 0
+	game_time = 0
+	left_goals = 0
+	right_goals = 0
+	
+	
