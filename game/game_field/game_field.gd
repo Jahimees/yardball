@@ -14,9 +14,13 @@ func spawn_players():
 	on_reset_players_positions()
 		
 	for player_id in Globals.left_team:
+		var player: Player = Globals.left_team[player_id]
+		player.find_child("AnimatedSprite2D").play("blue_team")
 		add_child(Globals.left_team[player_id])
 	
 	for player_id in Globals.right_team:
+		var player: Player = Globals.right_team[player_id]
+		player.find_child("AnimatedSprite2D").play("white_team")
 		add_child(Globals.right_team[player_id])
 
 func _on_right_goal_area_body_entered(body: Node2D) -> void:
