@@ -19,6 +19,7 @@ func _ready() -> void:
 		up_time.disabled = true
 		down_time.disabled = true
 		play_btn.disabled = true
+		
 	Signals.teams_changed.connect(_on_teams_changed)
 
 func _process(delta: float) -> void:
@@ -41,6 +42,8 @@ func _on_teams_changed():
 		var label = Label.new()
 		label.text = str(player)
 		right_players_container.add_child(label)
+	
+	set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
 
 @rpc("any_peer", "call_local")
 func change_scene():
