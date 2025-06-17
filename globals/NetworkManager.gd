@@ -68,6 +68,5 @@ func host():
 	
 func join(ip: String):
 	multiplayer_peer.create_client(ip, 6005)
-	print(multiplayer_peer.ConnectionStatus)
 	multiplayer.multiplayer_peer = multiplayer_peer
 	get_tree().change_scene_to_file("res://UI/lobby.tscn")

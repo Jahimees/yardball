@@ -42,6 +42,12 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "0"
 
+[node name="Globals" type="Label" parent="VerticalContainer/HprizontalContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 34
+text = "0"
+
 [node name="HBoxContainer" type="HBoxContainer" parent="VerticalContainer"]
 layout_mode = 2
 
