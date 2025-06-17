@@ -1,8 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://djutivbypgy10"]
+[gd_scene load_steps=11 format=3 uid="uid://djutivbypgy10"]
 
 [ext_resource type="Texture2D" uid="uid://b1ckm81hvwwa1" path="res://assets/field/FootballGround.png" id="1_467e1"]
 [ext_resource type="Script" uid="uid://cof3ai77kx0q8" path="res://game/game_field/game_field.gd" id="1_u8ksv"]
-[ext_resource type="PackedScene" uid="uid://ch5as1n7a7sq5" path="res://game/player/player.tscn" id="2_c38ol"]
 [ext_resource type="PackedScene" uid="uid://d33i88gcp4jxp" path="res://game/ball/ball.tscn" id="3_c38ol"]
 [ext_resource type="PackedScene" uid="uid://psm5qtp5h38i" path="res://HUD/hud.tscn" id="5_oiqg3"]
 [ext_resource type="PackedScene" uid="uid://cl1wrbafcsmjk" path="res://UI/debug/debug_console.tscn" id="6_pl320"]
@@ -32,9 +31,6 @@ max_distance = 2000.0
 [node name="FootballGround" type="Sprite2D" parent="."]
 position = Vector2(576, 324)
 texture = ExtResource("1_467e1")
-
-[node name="Player" parent="." instance=ExtResource("2_c38ol")]
-position = Vector2(540, 289)
 
 [node name="borders" type="Node2D" parent="."]
 

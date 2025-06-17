@@ -14,7 +14,7 @@ var is_end_game_timer_active
 
 func _ready() -> void:
 	Signals.goal.connect(_on_goal_scored)
-	timer.start()
+	timer.start(Globals.game_time)
 	
 func  _process(delta: float) -> void:
 	timer_label.text = "%02d:%02d" % [int(timer.time_left) / 60, int(timer.time_left) % 60]
@@ -31,7 +31,7 @@ func _on_goal_scored(goal_side):
 	
 	await do_slow_motion_effect()
 	
-	if multiplayer.is_server() and !check_end_game_by_goals():
+	if multiplayer.is_server() and !check_end_game():
 		start_count_down_timer.rpc()
 		
 	Signals.reset_players_positions.emit()
@@ -73,21 +73,34 @@ func _on_reset_pressed() -> void:
 	timer.set_paused(false)
 	Signals.reset.emit()
 
-func check_end_game_by_goals():
-	if Globals.win_goals == 0:
+func check_end_game():
+	if Globals.win_goals == 0 and Globals.game_time == 0:
 		return
-		
-	if Globals.left_goals == Globals.win_goals:
-		win_label.text = "Левая команда - победила!"
+	
+	if timer.time_left == 0 and Globals.game_time != 0:
+		if Globals.left_goals == Globals.right_goals:
+			win_label.text = "Ничья"
+			
+		elif Globals.left_goals > Globals.right_goals:
+			win_label.text = "Левая команда - победила!"
+		else:
+			win_label.text = "Правая команда - победила!"
 		end_game_timer.start(5)
 		is_end_game_timer_active = true
 		return true
-		
-	if Globals.right_goals == Globals.win_goals:
-		win_label.text = "Правая команда - победила!"
+	
+	if Globals.left_goals == Globals.win_goals || Globals.right_goals == Globals.win_goals:
+		if Globals.left_goals == Globals.win_goals:
+			win_label.text = "Левая команда - победила!"
+		else:
+			win_label.text = "Правая команда - победила!"
 		end_game_timer.start(5)
 		is_end_game_timer_active = true
 		return true
 
 func _on_end_game_timer_timeout() -> void:
 	Signals.game_end.emit()
+
+
+func _on_timer_timeout() -> void:
+	check_end_game()
