@@ -58,3 +58,4 @@ func on_reset_players_positions():
 		player.position = Vector2(676, spawn_y_pos)
 		Signals.move_player_to.emit(player.name.to_int(), Vector2(676, spawn_y_pos))
 		counter += 1
+ 

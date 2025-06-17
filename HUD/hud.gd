@@ -6,8 +6,11 @@ extends Control
 @onready var timer: Timer = $Timer
 @onready var countdown_timer = $CountDownTimer
 @onready var countdown_label = $CountdownLabel
+@onready var win_label: Label = $WinLabel
+@onready var end_game_timer: Timer = $EndGameTimer
 
 var is_countdown_timer_active
+var is_end_game_timer_active
 
 func _ready() -> void:
 	#timer.wait_time = Globals.game_time
@@ -16,16 +19,20 @@ func _ready() -> void:
 	
 func  _process(delta: float) -> void:
 	timer_label.text = "%02d:%02d" % [int(timer.time_left) / 60, int(timer.time_left) % 60]
-	if (is_countdown_timer_active):
+	if is_countdown_timer_active:
 		countdown_label.text = str(int(countdown_timer.time_left) + 1)
+	
+	if is_end_game_timer_active:
+		countdown_label.text = "Выход в лобби: " + str(int(end_game_timer.time_left) + 1)
 
 func _on_goal_scored(goal_side):
+	
 	if multiplayer.is_server():
 		add_score.rpc(goal_side)
 	
 	await do_slow_motion_effect()
 	
-	if multiplayer.is_server():
+	if multiplayer.is_server() and !check_end_game_by_goals():
 		start_count_down_timer.rpc()
 		
 	Signals.reset_players_positions.emit()
@@ -61,9 +68,27 @@ func add_score(goal_side):
 func update_score():
 	left_points.text = str(Globals.left_goals)
 	right_points.text = str(Globals.right_goals)
-	
 	timer.set_paused(true)
 
 func _on_reset_pressed() -> void:
 	timer.set_paused(false)
 	Signals.reset.emit()
+
+func check_end_game_by_goals():
+	if Globals.win_goals == 0:
+		return
+		
+	if Globals.left_goals == Globals.win_goals:
+		win_label.text = "Левая команда - победила!"
+		end_game_timer.start(5)
+		is_end_game_timer_active = true
+		return true
+		
+	if Globals.right_goals == Globals.win_goals:
+		win_label.text = "Правая команда - победила!"
+		end_game_timer.start(5)
+		is_end_game_timer_active = true
+		return true
+
+func _on_end_game_timer_timeout() -> void:
+	Signals.game_end.emit()
