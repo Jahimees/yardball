@@ -12,6 +12,8 @@ extends Control
 @onready var up_time: Button = $MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/VBoxContainer/UpTime
 @onready var down_time: Button = $MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/VBoxContainer/DownTime
 
+var is_server_close: bool = false
+
 func _ready() -> void:
 	if !multiplayer.is_server():
 		up_goals.disabled = true
@@ -21,9 +23,12 @@ func _ready() -> void:
 		play_btn.disabled = true
 		
 	Signals.teams_changed.connect(_on_teams_changed)
+	
+	set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
 
 func _process(delta: float) -> void:
-	pass
+	if is_server_close:
+		pass
 		
 func _on_teams_changed():
 
@@ -51,31 +56,32 @@ func change_scene():
 
 func _on_play_btn_pressed() -> void:
 	change_scene.rpc()
-	
+
 func _on_exit_btn_pressed() -> void:
+	exit_lobby.rpc()
+	NetworkManager.close_server.rpc()
+	
+@rpc("any_peer", "call_local")
+func exit_lobby():
 	get_tree().change_scene_to_file("res://UI/ui_menu_host-join.tscn")
 
-func _on_up_pressed() -> void:
-	if multiplayer.is_server():
-		goals_count_input.text = str(goals_count_input.text.to_int() + 1)
-		set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
+func _on_up_pressed() -> void:	
+	goals_count_input.text = str(goals_count_input.text.to_int() + 1)
+	set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
 
 func _on_down_pressed() -> void:
-	if multiplayer.is_server():
-		if goals_count_input.text.to_int() > 0:
-			goals_count_input.text = str(goals_count_input.text.to_int() - 1)
-		set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
+	if goals_count_input.text.to_int() > 0:
+		goals_count_input.text = str(goals_count_input.text.to_int() - 1)
+	set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
 
 func _on_up_time_pressed() -> void:
-	if multiplayer.is_server():
-		match_time_input.text = str(match_time_input.text.to_int() + 10)
-		set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
+	match_time_input.text = str(match_time_input.text.to_int() + 10)
+	set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
 
 func _on_down_time_pressed() -> void:
-	if multiplayer.is_server():
-		if match_time_input.text.to_int() > 0:
-			match_time_input.text = str(match_time_input.text.to_int() - 10)
-		set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
+	if match_time_input.text.to_int() > 0:
+		match_time_input.text = str(match_time_input.text.to_int() - 10)
+	set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
 
 @rpc("any_peer", "call_local", "reliable")
 func set_game_parameters(goals, time):

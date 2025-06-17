@@ -55,7 +55,7 @@ func register_player(peer_id = 1):
 		Signals.teams_changed.emit()
 		
 
-@rpc("any_peer", "call_local", "reliable")	
+@rpc("any_peer", "call_local", "reliable")
 func unregister_player(peer_id):
 	
 	Globals.players_lobby.erase(peer_id)
@@ -63,6 +63,8 @@ func unregister_player(peer_id):
 		Globals.left_team_lobby.erase(peer_id)
 	else:
 		Globals.right_team_lobby.erase(peer_id)
+		
+	Signals.teams_changed.emit()
 
 func host():
 	multiplayer_peer.create_server(6005)
