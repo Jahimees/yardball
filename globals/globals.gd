@@ -3,7 +3,7 @@ extends Node
 func _ready() -> void:
 	Signals.game_end.connect(_on_game_end)
 
-var win_goals: int = 1
+var win_goals: int = 0
 var game_time: int = 0
 
 var left_goals: int = 0
