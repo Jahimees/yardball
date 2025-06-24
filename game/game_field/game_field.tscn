@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://djutivbypgy10"]
+[gd_scene load_steps=12 format=3 uid="uid://djutivbypgy10"]
 
 [ext_resource type="Texture2D" uid="uid://b1ckm81hvwwa1" path="res://assets/field/FootballGround.png" id="1_467e1"]
 [ext_resource type="Script" uid="uid://cof3ai77kx0q8" path="res://game/game_field/game_field.gd" id="1_u8ksv"]
 [ext_resource type="PackedScene" uid="uid://d33i88gcp4jxp" path="res://game/ball/ball.tscn" id="3_c38ol"]
 [ext_resource type="PackedScene" uid="uid://psm5qtp5h38i" path="res://HUD/hud.tscn" id="5_oiqg3"]
+[ext_resource type="PackedScene" uid="uid://b4rdiitf84aou" path="res://UI/game_ui.tscn" id="6_adibl"]
 [ext_resource type="PackedScene" uid="uid://cl1wrbafcsmjk" path="res://UI/debug/debug_console.tscn" id="6_pl320"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_467e1"]
@@ -124,12 +125,75 @@ debug_color = Color(0.985522, 0, 0.33292, 0.42)
 [node name="ball" parent="." instance=ExtResource("3_c38ol")]
 position = Vector2(576, 322)
 
+[node name="players" type="Node2D" parent="." groups=["players"]]
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Ui" parent="CanvasLayer" instance=ExtResource("5_oiqg3")]
+[node name="HUD" parent="CanvasLayer" instance=ExtResource("5_oiqg3")]
 metadata/_edit_lock_ = true
 
 [node name="DebugConsole" parent="CanvasLayer" instance=ExtResource("6_pl320")]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="SmashContainer" type="MarginContainer" parent="CanvasLayer/Control/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="SmashCD" type="ProgressBar" parent="CanvasLayer/Control/HBoxContainer/SmashContainer"]
+custom_minimum_size = Vector2(150, 30)
+layout_mode = 2
+max_value = 1.5
+value = 1.5
+show_percentage = false
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/SmashContainer"]
+layout_mode = 2
+text = "Ударить"
+horizontal_alignment = 1
+
+[node name="StaminaContainer" type="MarginContainer" parent="CanvasLayer/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Stamina" type="ProgressBar" parent="CanvasLayer/Control/HBoxContainer/StaminaContainer"]
+custom_minimum_size = Vector2(150, 30)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/StaminaContainer"]
+layout_mode = 2
+text = "Бег"
+horizontal_alignment = 1
+
+[node name="Game_UI" parent="CanvasLayer" instance=ExtResource("6_adibl")]
+visible = false
 
 [node name="PlayerIdle" type="Sprite2D" parent="."]
 position = Vector2(573, 86)

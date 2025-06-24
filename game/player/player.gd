@@ -6,12 +6,9 @@ var speed = Globals.DEFAULT_PLAYER_SPEED
 var stamina = Globals.DEFAULT_PLAYER_STAMINA
 
 @onready var player_sprite = $AnimatedSprite2D
-@onready var stamina_cd: ProgressBar = $CanvasLayer/Control/HBoxContainer/StaminaContainer/Stamina
-@onready var smash_cd: ProgressBar = $CanvasLayer/Control/HBoxContainer/SmashContainer/SmashCD
 @onready var timer_smash: Timer = $TimerSmash
 @onready var timer_stamina: Timer = $TimerStamina
 @onready var smash_light: PointLight2D = $SmashLight
-@onready var game_ui: Control = $CanvasLayer/Game_UI
 
 @export var collision_body:Node = null
 var collision_body_smash:Node = null
@@ -19,7 +16,6 @@ var collision_body_smash:Node = null
 
 var can_smash_ball: bool = false
 var is_smash_cd_active: bool = false
-var is_game_ui_showed: bool = false
 
 var is_stamina_timer_active: bool = false
 
@@ -160,8 +156,7 @@ func move(direction: Vector2):
 		velocity = direction.rotated(deg_to_rad(run_angle)) * speed
 	
 func update_cooldown():
-	smash_cd.value = 1.5 - timer_smash.time_left
-	stamina_cd.value = stamina
+	Signals.update_hud_values.emit(1.5 - timer_smash.time_left, stamina)
 	
 func _on_collision_area_body_entered(body: Node2D) -> void:
 	collision_body = body
@@ -191,9 +186,4 @@ func _on_smash_area_body_exited(body: Node2D) -> void:
 
 func escape():
 	if Input.is_action_just_pressed("Escape"):
-		is_game_ui_showed = !is_game_ui_showed
-		
-	game_ui.show() if is_game_ui_showed else game_ui.hide()
-		
-func _on_game_ui_resume_pressed() -> void:
-	is_game_ui_showed = false
+		Signals.change_game_ui_visible.emit(self.name)
