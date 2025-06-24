@@ -21,6 +21,8 @@ func _on_peer_connected(peer_id):
 func _on_peer_disconnected(peer_id):
 	print("Client disconnected: ", peer_id)
 	unregister_player.rpc(peer_id)
+	if peer_id == 1:
+		disconnect_me()
 
 @rpc("any_peer", "call_local", "reliable")
 func register_player_for_game(peer_id):
@@ -73,7 +75,6 @@ func unregister_player(peer_id):
 	else:
 		Globals.right_team_lobby.erase(peer_id)
 	
-	print("despawning...")
 	despawn_player(peer_id)
 		
 	Signals.teams_changed.emit()
