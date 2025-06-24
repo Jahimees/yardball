@@ -3,6 +3,8 @@ extends Node
 signal goal
 
 signal teams_changed
+signal change_team
+signal show_error_notification
 
 signal reset_players_positions
 

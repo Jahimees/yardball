@@ -6,6 +6,7 @@ var should_close_server = false
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	Signals.change_team.connect(_on_change_team)
 	
 func _process(delta: float) -> void:
 	if should_close_server:
@@ -13,7 +14,6 @@ func _process(delta: float) -> void:
 
 func _on_peer_connected(peer_id):
 	print("Client connected: ", peer_id)
-		
 	register_player.rpc(peer_id)
 	if multiplayer.is_server():
 		sync_players_in_lobby.rpc_id(peer_id, Globals.left_team_lobby, Globals.right_team_lobby, Globals.players_lobby)
@@ -115,4 +115,23 @@ func sync_players_in_lobby(left_team_lobby, right_team_lobby, all_players):
 	Globals.left_team_lobby = left_team_lobby
 	Globals.right_team_lobby = right_team_lobby
 	Globals.players_lobby = all_players
+	Signals.teams_changed.emit()
+	
+func _on_change_team():
+	var peer_id = multiplayer_peer.get_unique_id()
+	if (Globals.left_team_lobby.has(peer_id) and Globals.left_team_lobby.size() == 1) or (Globals.right_team_lobby.has(peer_id) and Globals.right_team_lobby.size() == 1) :
+		Signals.show_error_notification.emit()
+	else:
+		change_team.rpc(peer_id)
+
+@rpc("any_peer", "call_local", "reliable")
+func change_team(peer_id):
+	
+	if Globals.left_team_lobby.has(peer_id) and Globals.left_team_lobby.size() > 1:
+		Globals.left_team_lobby.erase(peer_id)
+		Globals.right_team_lobby[peer_id] = peer_id
+	elif Globals.right_team_lobby.has(peer_id) and Globals.right_team_lobby.size() > 1:
+		Globals.right_team_lobby.erase(peer_id)
+		Globals.left_team_lobby[peer_id] = peer_id
+		
 	Signals.teams_changed.emit()

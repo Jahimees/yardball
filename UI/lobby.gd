@@ -12,6 +12,8 @@ extends Control
 @onready var up_time: Button = $MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/VBoxContainer/UpTime
 @onready var down_time: Button = $MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/VBoxContainer/DownTime
 
+@onready var notification_label: Label = $MarginContainer/CommonField/NotificationField/NotificationLabel
+
 var is_server_close: bool = false
 
 func _ready() -> void:
@@ -23,6 +25,12 @@ func _ready() -> void:
 		play_btn.disabled = true
 		
 	Signals.teams_changed.connect(_on_teams_changed)
+	Signals.show_error_notification.connect(_on_show_notification)
+	
+	if multiplayer.is_server():
+		_on_teams_changed()
+		
+	notification_label.modulate.a = 0
 
 func _process(delta: float) -> void:
 	if is_server_close:
@@ -89,3 +97,14 @@ func set_game_parameters(goals, time):
 	if multiplayer and !multiplayer.is_server():
 		goals_count_input.text = str(Globals.win_goals)
 		match_time_input.text = str(Globals.game_time)
+
+func _on_change_team_pressed() -> void:
+	Signals.change_team.emit()
+
+func _on_show_notification():
+	var tween = create_tween()
+	tween.tween_property(notification_label, "modulate:a", 1.0, 0.5)
+	
+	tween.tween_interval(2.0)
+	
+	tween.tween_property(notification_label, "modulate:a", 0.0, 0.5)
