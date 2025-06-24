@@ -6,6 +6,7 @@ var should_close_server = false
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	Signals.change_team.connect(_on_change_team)
 	
 func _process(delta: float) -> void:
 	if should_close_server:
@@ -13,7 +14,6 @@ func _process(delta: float) -> void:
 
 func _on_peer_connected(peer_id):
 	print("Client connected: ", peer_id)
-		
 	register_player.rpc(peer_id)
 
 func _on_peer_disconnected(peer_id):
@@ -93,3 +93,19 @@ func close_server():
 	print("Close server")
 	should_close_server = false
 	multiplayer_peer.close()
+	
+func _on_change_team():
+	change_team.rpc(multiplayer_peer.get_unique_id())
+
+@rpc("any_peer", "call_local", "reliable")
+func change_team(peer_id):
+	#var peer_id = multiplayer_peer.get_unique_id()
+	
+	if Globals.left_team_lobby.has(peer_id):
+		Globals.left_team_lobby.erase(peer_id)
+		Globals.right_team_lobby[peer_id] = peer_id
+	else:
+		Globals.right_team_lobby.erase(peer_id)
+		Globals.left_team_lobby[peer_id] = peer_id
+		
+	Signals.teams_changed.emit()

@@ -162,18 +162,13 @@ theme_override_constants/margin_bottom = 20
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CommonField/BottomButtons"]
 layout_mode = 2
 size_flags_vertical = 8
-theme_override_constants/separation = 50
+theme_override_constants/separation = 90
 
-[node name="joinLeftBtn" type="Button" parent="MarginContainer/CommonField/BottomButtons/HBoxContainer"]
+[node name="changeTeam" type="Button" parent="MarginContainer/CommonField/BottomButtons/HBoxContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Левая команда"
-
-[node name="joinRightBtn" type="Button" parent="MarginContainer/CommonField/BottomButtons/HBoxContainer"]
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
-text = "Правая команда"
+text = "Сменить команду"
 
 [node name="exitBtn" type="Button" parent="MarginContainer/CommonField/BottomButtons/HBoxContainer"]
 custom_minimum_size = Vector2(150, 0)
@@ -191,5 +186,6 @@ text = "Играть"
 [connection signal="pressed" from="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/GoalsCountSetting/VBoxContainer/DownGoals" to="." method="_on_down_pressed"]
 [connection signal="pressed" from="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/VBoxContainer/UpTime" to="." method="_on_up_time_pressed"]
 [connection signal="pressed" from="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/VBoxContainer/DownTime" to="." method="_on_down_time_pressed"]
+[connection signal="pressed" from="MarginContainer/CommonField/BottomButtons/HBoxContainer/changeTeam" to="." method="_on_change_team_pressed"]
 [connection signal="pressed" from="MarginContainer/CommonField/BottomButtons/HBoxContainer/exitBtn" to="." method="_on_exit_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/CommonField/BottomButtons/HBoxContainer/playBtn" to="." method="_on_play_btn_pressed"]

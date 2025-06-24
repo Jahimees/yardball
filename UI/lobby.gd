@@ -89,3 +89,6 @@ func set_game_parameters(goals, time):
 	if !multiplayer.is_server():
 		goals_count_input.text = str(Globals.win_goals)
 		match_time_input.text = str(Globals.game_time)
+
+func _on_change_team_pressed() -> void:
+	Signals.change_team.emit()
