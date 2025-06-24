@@ -68,7 +68,6 @@ size_flags_horizontal = 3
 [node name="Player_1" type="Label" parent="MarginContainer/CommonField/CenterField/HBoxContainer/HBoxContainer/LeftPlayersContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "Player 1"
 horizontal_alignment = 1
 
 [node name="RightPlayersContainer" type="VBoxContainer" parent="MarginContainer/CommonField/CenterField/HBoxContainer/HBoxContainer"]
@@ -78,7 +77,6 @@ size_flags_horizontal = 3
 [node name="Player_2" type="Label" parent="MarginContainer/CommonField/CenterField/HBoxContainer/HBoxContainer/RightPlayersContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "Player 1"
 horizontal_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/CommonField/CenterField/HBoxContainer"]
@@ -152,6 +150,18 @@ icon = ExtResource("3_wloxn")
 layout_mode = 2
 icon = ExtResource("4_mhaia")
 
+[node name="NotificationField" type="MarginContainer" parent="MarginContainer/CommonField"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+
+[node name="NotificationLabel" type="Label" parent="MarginContainer/CommonField/NotificationField"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.701961, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "В твоей команде слишком мало игроков!"
+horizontal_alignment = 1
+
 [node name="BottomButtons" type="MarginContainer" parent="MarginContainer/CommonField"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -162,18 +172,13 @@ theme_override_constants/margin_bottom = 20
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CommonField/BottomButtons"]
 layout_mode = 2
 size_flags_vertical = 8
-theme_override_constants/separation = 50
+theme_override_constants/separation = 90
 
-[node name="joinLeftBtn" type="Button" parent="MarginContainer/CommonField/BottomButtons/HBoxContainer"]
+[node name="changeTeam" type="Button" parent="MarginContainer/CommonField/BottomButtons/HBoxContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Левая команда"
-
-[node name="joinRightBtn" type="Button" parent="MarginContainer/CommonField/BottomButtons/HBoxContainer"]
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
-text = "Правая команда"
+text = "Сменить команду"
 
 [node name="exitBtn" type="Button" parent="MarginContainer/CommonField/BottomButtons/HBoxContainer"]
 custom_minimum_size = Vector2(150, 0)
@@ -191,5 +196,6 @@ text = "Играть"
 [connection signal="pressed" from="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/GoalsCountSetting/VBoxContainer/DownGoals" to="." method="_on_down_pressed"]
 [connection signal="pressed" from="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/VBoxContainer/UpTime" to="." method="_on_up_time_pressed"]
 [connection signal="pressed" from="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/VBoxContainer/DownTime" to="." method="_on_down_time_pressed"]
+[connection signal="pressed" from="MarginContainer/CommonField/BottomButtons/HBoxContainer/changeTeam" to="." method="_on_change_team_pressed"]
 [connection signal="pressed" from="MarginContainer/CommonField/BottomButtons/HBoxContainer/exitBtn" to="." method="_on_exit_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/CommonField/BottomButtons/HBoxContainer/playBtn" to="." method="_on_play_btn_pressed"]
