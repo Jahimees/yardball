@@ -15,3 +15,4 @@ signal game_end
 
 signal change_game_ui_visible(peer_id)
 signal update_hud_values(smash_cd: float, stamina: float)
+signal despawn_player_from_field(peer_id)

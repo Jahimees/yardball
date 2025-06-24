@@ -15,6 +15,8 @@ func _on_peer_connected(peer_id):
 	print("Client connected: ", peer_id)
 		
 	register_player.rpc(peer_id)
+	if multiplayer.is_server():
+		sync_players_in_lobby.rpc_id(peer_id, Globals.left_team_lobby, Globals.right_team_lobby, Globals.players_lobby)
 
 func _on_peer_disconnected(peer_id):
 	print("Client disconnected: ", peer_id)
@@ -36,10 +38,17 @@ func register_player_for_game(peer_id):
 
 @rpc("any_peer", "call_local", "reliable")
 func despawn_player(peer_id):
-#	TODO сделать
-	var player_node = get_node_or_null(str(peer_id))
-	if player_node:
+	var player_node: Player
+	if Globals.left_team.get(peer_id):
+		player_node = Globals.left_team.get(peer_id)
+		Globals.left_team.erase(peer_id)
 		player_node.queue_free()
+		return
+	
+	if Globals.right_team.get(peer_id):
+		player_node = Globals.right_team.get(peer_id)
+		Globals.right_team.erase(peer_id)
+		Signals.despawn_player_from_field.emit(peer_id)
 		
 @rpc("any_peer", "call_local", "reliable")
 func register_player(peer_id = 1):
@@ -59,10 +68,13 @@ func register_player(peer_id = 1):
 func unregister_player(peer_id):
 	
 	Globals.players_lobby.erase(peer_id)
-	if Globals.left_team_lobby.get(peer_id) != null:
+	if Globals.left_team_lobby.get(peer_id):
 		Globals.left_team_lobby.erase(peer_id)
 	else:
 		Globals.right_team_lobby.erase(peer_id)
+	
+	print("despawning...")
+	despawn_player(peer_id)
 		
 	Signals.teams_changed.emit()
 
@@ -83,8 +95,7 @@ func close_server():
 	should_close_server = true
 	
 	if !multiplayer.is_server():
-		unregister_player(multiplayer_peer.get_unique_id())
-		multiplayer_peer.close()
+		disconnect_me()
 		should_close_server = false
 		return
 		
@@ -92,4 +103,16 @@ func close_server():
 		return
 	print("Close server")
 	should_close_server = false
+	disconnect_me()
+
+func disconnect_me():
+	get_tree().change_scene_to_file("res://UI/ui_menu.tscn")
+	Globals.reset_game_vars()
 	multiplayer_peer.close()
+
+@rpc("authority")
+func sync_players_in_lobby(left_team_lobby, right_team_lobby, all_players):
+	Globals.left_team_lobby = left_team_lobby
+	Globals.right_team_lobby = right_team_lobby
+	Globals.players_lobby = all_players
+	Signals.teams_changed.emit()

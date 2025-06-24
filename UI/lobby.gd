@@ -57,12 +57,12 @@ func _on_play_btn_pressed() -> void:
 	change_scene.rpc()
 
 func _on_exit_btn_pressed() -> void:
-	exit_lobby.rpc()
-	NetworkManager.close_server.rpc()
+	if multiplayer and !multiplayer.is_server():
+		NetworkManager.disconnect_me()
+		
+	if multiplayer and multiplayer.is_server():
+		NetworkManager.close_server.rpc()
 	
-@rpc("any_peer", "call_local")
-func exit_lobby():
-	get_tree().change_scene_to_file("res://UI/ui_menu_host-join.tscn")
 
 func _on_up_pressed() -> void:	
 	goals_count_input.text = str(goals_count_input.text.to_int() + 1)
@@ -86,6 +86,6 @@ func _on_down_time_pressed() -> void:
 func set_game_parameters(goals, time):
 	Globals.win_goals = goals.to_int()
 	Globals.game_time = time.to_int()
-	if !multiplayer.is_server():
+	if multiplayer and !multiplayer.is_server():
 		goals_count_input.text = str(Globals.win_goals)
 		match_time_input.text = str(Globals.game_time)
