@@ -23,8 +23,6 @@ func _ready() -> void:
 		play_btn.disabled = true
 		
 	Signals.teams_changed.connect(_on_teams_changed)
-	
-	set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
 
 func _process(delta: float) -> void:
 	if is_server_close:
@@ -48,7 +46,8 @@ func _on_teams_changed():
 		label.text = str(player)
 		right_players_container.add_child(label)
 	
-	set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
+	if multiplayer and multiplayer.is_server():
+		set_game_parameters.rpc(goals_count_input.text, match_time_input.text)
 
 @rpc("any_peer", "call_local")
 func change_scene():
