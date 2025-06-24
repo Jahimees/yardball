@@ -95,16 +95,19 @@ func close_server():
 	multiplayer_peer.close()
 	
 func _on_change_team():
-	change_team.rpc(multiplayer_peer.get_unique_id())
+	var peer_id = multiplayer_peer.get_unique_id()
+	if (Globals.left_team_lobby.has(peer_id) and Globals.left_team_lobby.size() == 1) or (Globals.right_team_lobby.has(peer_id) and Globals.right_team_lobby.size() == 1) :
+		Signals.show_error_notification.emit()
+	else:
+		change_team.rpc(peer_id)
 
 @rpc("any_peer", "call_local", "reliable")
 func change_team(peer_id):
-	#var peer_id = multiplayer_peer.get_unique_id()
 	
-	if Globals.left_team_lobby.has(peer_id):
+	if Globals.left_team_lobby.has(peer_id) and Globals.left_team_lobby.size() > 1:
 		Globals.left_team_lobby.erase(peer_id)
 		Globals.right_team_lobby[peer_id] = peer_id
-	else:
+	elif Globals.right_team_lobby.has(peer_id) and Globals.right_team_lobby.size() > 1:
 		Globals.right_team_lobby.erase(peer_id)
 		Globals.left_team_lobby[peer_id] = peer_id
 		

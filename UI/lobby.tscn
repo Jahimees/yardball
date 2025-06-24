@@ -68,7 +68,6 @@ size_flags_horizontal = 3
 [node name="Player_1" type="Label" parent="MarginContainer/CommonField/CenterField/HBoxContainer/HBoxContainer/LeftPlayersContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "Player 1"
 horizontal_alignment = 1
 
 [node name="RightPlayersContainer" type="VBoxContainer" parent="MarginContainer/CommonField/CenterField/HBoxContainer/HBoxContainer"]
@@ -78,7 +77,6 @@ size_flags_horizontal = 3
 [node name="Player_2" type="Label" parent="MarginContainer/CommonField/CenterField/HBoxContainer/HBoxContainer/RightPlayersContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "Player 1"
 horizontal_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/CommonField/CenterField/HBoxContainer"]
@@ -151,6 +149,18 @@ icon = ExtResource("3_wloxn")
 [node name="DownTime" type="Button" parent="MarginContainer/CommonField/CenterField/HBoxContainer/VBoxContainer2/MatchTimeSetting/VBoxContainer"]
 layout_mode = 2
 icon = ExtResource("4_mhaia")
+
+[node name="NotificationField" type="MarginContainer" parent="MarginContainer/CommonField"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+
+[node name="NotificationLabel" type="Label" parent="MarginContainer/CommonField/NotificationField"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.701961, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "В твоей команде слишком мало игроков!"
+horizontal_alignment = 1
 
 [node name="BottomButtons" type="MarginContainer" parent="MarginContainer/CommonField"]
 layout_mode = 2
