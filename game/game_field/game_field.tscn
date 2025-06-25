@@ -88,7 +88,7 @@ shape = SubResource("RectangleShape2D_u8ksv")
 
 [node name="RightGoalArea" type="Area2D" parent="right_gate"]
 collision_layer = 4
-collision_mask = 3
+collision_mask = 2
 
 [node name="RightGoalCollision" type="CollisionShape2D" parent="right_gate/RightGoalArea"]
 position = Vector2(1120.13, 324)
@@ -115,7 +115,7 @@ shape = SubResource("RectangleShape2D_u8ksv")
 
 [node name="LeftGoalArea" type="Area2D" parent="left_gate"]
 collision_layer = 4
-collision_mask = 3
+collision_mask = 2
 
 [node name="LeftGoalCollision" type="CollisionShape2D" parent="left_gate/LeftGoalArea"]
 position = Vector2(31.75, 325)
