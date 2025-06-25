@@ -16,6 +16,7 @@ func _ready() -> void:
 	Signals.reset_players_positions.connect(on_reset_players_positions)
 	Signals.change_game_ui_visible.connect(_on_change_game_ui_visible)
 	Signals.update_hud_values.connect(_on_update_hud_values)
+	Signals.despawn_player_from_field.connect(_on_despawn_player)
 
 func spawn_players():
 	for player_id in Globals.players_lobby:
@@ -85,6 +86,7 @@ func _on_update_hud_values(smash_cd, stamina):
 	self.smash_cd.value = smash_cd
 	self.stamina.value = stamina
 
+
 #TODO не отключается нихера!
 @rpc("any_peer", "reliable", "call_local")
 func temp_goal_areas_diasble():
@@ -95,9 +97,14 @@ func temp_goal_areas_diasble():
 	right_goal_collision.disabled = true
 	printt(right_goal_area.monitoring, right_goal_area.monitorable, right_goal_collision.disabled)
 	
-	
 @rpc("any_peer", "reliable", "call_local")
 func goal_areas_enable():
 	pass
 	#right_goal_area.monitoring = true
 	#left_goal_area.monitoring = true
+
+func _on_despawn_player(peer_id):
+	for player in get_tree().get_first_node_in_group("players").get_children():
+		if peer_id == player.name.to_int():
+			player.queue_free()
+

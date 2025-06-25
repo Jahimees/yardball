@@ -13,7 +13,7 @@ var left_team_lobby := {}
 var right_team_lobby := {}
 var players_lobby := {}
 
-var players := {}
+#var players := {}
 var left_team := {}
 var right_team := {}
 
@@ -41,13 +41,12 @@ const SYNC_UPDATE_INTERVAL := 0.00000000000000000001
 const GAME_FIELD_CENTER_POS := Vector2(576, 322)
 
 func _on_game_end():
-	get_tree().change_scene_to_file("res://UI/ui_menu.tscn")
-	reset_game_vars()
+	
 	if multiplayer.is_server():
 		NetworkManager.close_server.rpc()
 	
 func reset_game_vars():
-	players = {}
+	#players = {}
 	left_team = {}
 	right_team = {}
 	win_goals = 0
