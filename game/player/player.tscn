@@ -51,9 +51,10 @@ floor_stop_on_slope = false
 script = ExtResource("1_obar5")
 
 [node name="SmashLight" type="PointLight2D" parent="."]
+visible = false
 position = Vector2(6, 0)
 scale = Vector2(0.23, 0.23)
-energy = 0.7
+energy = 0.5
 texture = ExtResource("2_8soms")
 
 [node name="SmashArea" type="Area2D" parent="."]

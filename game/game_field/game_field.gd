@@ -6,6 +6,11 @@ var multiplayer_peer = ENetMultiplayerPeer.new()
 @onready var smash_cd: ProgressBar = $CanvasLayer/Control/HBoxContainer/SmashContainer/SmashCD
 @onready var stamina: ProgressBar = $CanvasLayer/Control/HBoxContainer/StaminaContainer/Stamina
 
+@onready var right_goal_area: Area2D = $right_gate/RightGoalArea
+@onready var left_goal_area: Area2D = $left_gate/LeftGoalArea
+@onready var right_goal_collision: CollisionShape2D = $right_gate/RightGoalArea/RightGoalCollision
+@onready var left_goal_collision: CollisionShape2D = $left_gate/LeftGoalArea/LeftGoalCollision
+
 func _ready() -> void:
 	spawn_players()
 	Signals.reset_players_positions.connect(on_reset_players_positions)
@@ -36,7 +41,7 @@ func _on_right_goal_area_body_entered(body: Node2D) -> void:
 func _on_left_goal_area_body_entered(body: Node2D) -> void:
 	if body is Ball:
 		Signals.goal.emit(Globals.GoalSideEnum.RIGHT_GOAL)
-
+		
 #TODO move to globals. adaptive?
 func on_reset_players_positions():
 	var counter = 0
@@ -68,6 +73,8 @@ func on_reset_players_positions():
 		player.position = Vector2(676, spawn_y_pos)
 		Signals.move_player_to.emit(player.name.to_int(), Vector2(676, spawn_y_pos))
 		counter += 1
+	
+	goal_areas_enable.rpc()
  
 func _on_change_game_ui_visible(peer_id):
 	if game_ui.visible:
@@ -79,7 +86,25 @@ func _on_update_hud_values(smash_cd, stamina):
 	self.smash_cd.value = smash_cd
 	self.stamina.value = stamina
 
+
+#TODO не отключается нихера!
+@rpc("any_peer", "reliable", "call_local")
+func temp_goal_areas_diasble():
+	printt(right_goal_area.monitoring, right_goal_area.monitorable, right_goal_collision.disabled)
+	
+	right_goal_area.monitoring = false
+	right_goal_area.monitorable = false
+	right_goal_collision.disabled = true
+	printt(right_goal_area.monitoring, right_goal_area.monitorable, right_goal_collision.disabled)
+	
+@rpc("any_peer", "reliable", "call_local")
+func goal_areas_enable():
+	pass
+	#right_goal_area.monitoring = true
+	#left_goal_area.monitoring = true
+
 func _on_despawn_player(peer_id):
 	for player in get_tree().get_first_node_in_group("players").get_children():
 		if peer_id == player.name.to_int():
 			player.queue_free()
+

@@ -34,12 +34,15 @@ func _ready() -> void:
 	Signals.block_players.connect(func(is_blocked):
 		is_player_blocked = is_blocked
 	)
-	smash_light.energy = 0.0
+	#smash_light.energy = 0.0
 	timer_stamina.timeout.connect(func():
 		is_stamina_timer_active = false
 		if player_stamina_state == RestoreStaminaState.RESTORE_COOLDOWN:
 			player_stamina_state = RestoreStaminaState.CAN_RESTORE
 		)
+		
+	if is_multiplayer_authority():
+		smash_light.show()
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
@@ -174,7 +177,8 @@ func _on_smash_area_body_entered(body: Node2D) -> void:
 		can_smash_ball = true
 		if is_multiplayer_authority():
 			var tween = create_tween()
-			tween.tween_property(smash_light, "energy", 0.7, 0.1)
+			tween.tween_property(smash_light, "color:g", 0.0, 0.1)
+			tween.tween_property(smash_light, "color:b", 0.0, 0.1)
 
 func _on_smash_area_body_exited(body: Node2D) -> void:
 	if body is Ball:
@@ -182,7 +186,8 @@ func _on_smash_area_body_exited(body: Node2D) -> void:
 		can_smash_ball = false
 		if is_multiplayer_authority():
 			var tween = create_tween()
-			tween.tween_property(smash_light, "energy", 0.0, 0.2)
+			tween.tween_property(smash_light, "color:g", 1.0, 0.1)
+			tween.tween_property(smash_light, "color:b", 1.0, 0.1)
 
 func escape():
 	if Input.is_action_just_pressed("Escape"):
